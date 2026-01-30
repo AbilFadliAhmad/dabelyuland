@@ -1,11 +1,11 @@
- <!-- Navigation -->
+<!-- Navigation -->
     <header class="sticky top-0 z-50 w-full bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-md border-b border-border-light dark:border-border-dark">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-20">
           <!-- Logo -->
           <div class="flex items-center gap-2 cursor-pointer">
-            <div class="text-primary">
-              <span class="material-symbols-outlined text-3xl icon-filled">real_estate_agent</span>
+            <div class="flex items-center justify-center overflow-hidden">
+              <img src="public/images/dabelyu.png" alt="Logo Dabelyuland" class="h-24 w-auto object-contain transition-transform duration-300 hover:scale-105" />
             </div>
             <h2 class="text-xl font-bold tracking-tight text-text-main dark:text-white">Dabelyuland</h2>
           </div>

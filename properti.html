@@ -153,7 +153,6 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-      const propertyId = "<?php echo $propertyId; ?>";
       /* ==========================================
        JS LOGIC - ORIGINAL (Sesuai Kode Anda)
        ========================================== */
@@ -212,7 +211,7 @@
                     <span class="text-[10px] font-bold uppercase tracking-tighter">${isFirst ? "Sampul" : "Tambah"}</span>
                 </div>
                 <img id="preview-${slotId}" class="hidden w-full h-full object-cover" />
-                <input id="${slotId}" name="images[]" type="file" class="hidden image-input" accept="image/*" onchange="previewImage(this, '${slotId}', ${fileCounter})" />
+                <input id="${slotId}" name="images[]" type="file" class="hidden image-input" accept="image/*" onchange="previewImage(this, '${slotId}')" />
             </label>
             ${
               !isFirst
@@ -226,74 +225,19 @@
         imageGrid.appendChild(div);
       }
 
-      // Fungsi Preview Gambar
-  async function previewImage(input, id, urutan) {
-    if (input.files && input.files[0]) {
-      const file = input.files[0];
-      const container = document.getElementById(`container-${id}`);
-      const preview = document.getElementById(`preview-${id}`);
-      const placeholder = document.getElementById(`placeholder-${id}`);
-      const submitBtn = document.querySelector('button[type="submit"]');
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        document.getElementById(`preview-${id}`).src = e.target.result;
-        document.getElementById(`preview-${id}`).classList.remove("hidden");
-        document.getElementById(`placeholder-${id}`).classList.add("hidden");
-
-        // Cek apakah perlu tambah kotak baru
-        checkAndAddSlot();
-      };
-      reader.readAsDataURL(input.files[0]);
-
-      // 2. State Loading & Disable Submit
-        container.classList.add('opacity-50', 'pointer-events-none');
-        const loadingIndicator = addLoadingUI(container); // Tambahkan elemen spinner
-        submitBtn.disabled = true;
-        submitBtn.classList.add('bg-gray-400');
-        submitBtn.classList.add('hover:bg-gray-700');
-        submitBtn.textContent = 'Tunggu Sebentar...';
-
-        // 3. Kirim ke Server (AJAX)
-        const formData = new FormData();
-        formData.append('image', file);
-        formData.append('property_id', propertyId);
-        formData.append('is_main', id === 'file-1' ? 1 : 0);
-        formData.append('urutan', urutan);
-
-        try {
-          await setTimeout(() => {
-            
-          }, 1500);
-            const response = await fetch('index.php?page=upload&action=async_upload', {
-                method: 'POST',
-                body: formData
-            });
-            
-            if (response.ok) {
-                console.log('Upload sukses:');
-            }
-        } catch (error) {
-          console.error('Gagal mengunggah gambar:', error);
-            alert('Gagal mengunggah gambar');
-        } finally {
-            // 4. Selesai Loading
-            container.classList.remove('opacity-50', 'pointer-events-none');
-            loadingIndicator.remove();
-            submitBtn.disabled = false;
-            submitBtn.classList.remove('bg-gray-400');
-            submitBtn.classList.remove('hover:bg-gray-700');
-            submitBtn.textContent = 'SIMPAN PROPERTI';
+      function previewImage(input, id) {
+        if (input.files && input.files[0]) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            document.getElementById(`preview-${id}`).src = e.target.result;
+            document.getElementById(`preview-${id}`).classList.remove("hidden");
+            document.getElementById(`placeholder-${id}`).classList.add("hidden");
+            checkAndAddSlot();
+          };
+          reader.readAsDataURL(input.files[0]);
         }
-    }
-  }
+      }
 
-    function addLoadingUI(container) {
-      const loader = document.createElement('div');
-      loader.className = "absolute inset-0 flex items-center justify-center bg-white/50";
-      loader.innerHTML = '<div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>';
-      container.appendChild(loader);
-      return loader;
-  }
       function removeSlot(id) {
         const total = imageGrid.children.length;
         if (total > 4) document.getElementById(`container-${id}`).remove();

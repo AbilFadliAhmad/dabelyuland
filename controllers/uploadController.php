@@ -1,18 +1,24 @@
 <?php
 class UploadController {
     public function index() {
-        // Tentukan action berdasarkan URL, defaultnya adalah 'index' (tampilan form)
-        $action = isset($_GET['action']) ? $_GET['action'] : 'index';
+    $action = $_GET['action'] ?? 'index';
 
-        switch ($action) {
-            case 'store':
-                $this->store(); // Jalankan fungsi simpan data
-                break;
-            default:
-                include 'views/layout/upload.php';
-                break;
-        }
+    switch ($action) {
+        case 'async_upload':
+            $this->asyncUpload(); // Handle upload foto satuan
+            break;
+        case 'store':
+            $this->store(); // Finalisasi data (update title, price, dll)
+            break;
+        default:
+            require_once 'models/uploadModel.php';
+            $model = new UploadModel();
+            // Buat draft kosong untuk mendapatkan ID
+            $propertyId = $model->createDraft(); 
+            include 'views/layout/upload.php';
+            break;
     }
+}
 
     private function store() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -21,7 +27,7 @@ class UploadController {
 
             // 1. Tentukan Path Absolut untuk upload
             // dirname(__DIR__) membawa kita dari folder 'controllers' ke root project
-            $baseDir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR;
+            $baseDir = dirname(__DIR__) . '/' . 'public' . '/' . 'uploads' . '/';
 
             // Cek jika folder 'public/uploads' belum ada, maka buat otomatis
             if (!is_dir($baseDir)) {
@@ -64,4 +70,23 @@ class UploadController {
             }
         }
     }
+
+    public function asyncUpload() {
+    if (!isset($_FILES['image'])) return;
+
+    require_once 'models/uploadModel.php';
+    $model = new UploadModel();
+    
+    // Gunakan logic path yang kita bahas sebelumnya
+    $baseDir = dirname(__DIR__) . '/public/uploads/';
+    $ext = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+    $newName = uniqid('prop_', true) . '.' . $ext;
+    
+    if (move_uploaded_file($_FILES['image']['tmp_name'], $baseDir . $newName)) {
+        $path = 'public/uploads/' . $newName;
+        $data = $model->insertSingleImage($_POST['property_id'], $path, $_POST['is_main'], $_POST['urutan']);
+        return $data;
+    }
+    exit; // Pastikan berhenti agar tidak render HTML
+}
 }
