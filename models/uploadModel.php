@@ -116,4 +116,50 @@ class UploadModel {
         }
     }
 
+    public function getProperty($propertyId) {
+        try {
+            // 1. Ambil data utama properti (Kategori & Lokasi)
+            $sqlProperty = "SELECT properties.*, 
+                                categories.name AS category, 
+                                locations.city, 
+                                locations.district, 
+                                locations.address_detail,
+                                locations.latitude,
+                                locations.longitude 
+                            FROM properties 
+                            INNER JOIN categories ON properties.category_id = categories.id 
+                            INNER JOIN locations ON properties.id = locations.property_id 
+                            WHERE properties.id = ? 
+                            LIMIT 1";
+
+            $stmtProp = $this->db->prepare($sqlProperty);
+            $stmtProp->execute([$propertyId]);
+            $property = $stmtProp->fetch(PDO::FETCH_ASSOC);
+
+            // Jika properti tidak ditemukan, langsung return false
+            if (!$property) return false;
+
+            // 2. Ambil semua fasilitas terkait
+            $sqlFacilities = "SELECT facility_label FROM property_facilities WHERE property_id = ?";
+            $stmtFac = $this->db->prepare($sqlFacilities);
+            $stmtFac->execute([$propertyId]);
+            $property['facilities'] = $stmtFac->fetchAll(PDO::FETCH_COLUMN);
+
+            // 3. Ambil semua gambar, urutkan berdasarkan kolom 'urutan' (kecil ke besar)
+            $sqlImages = "SELECT id, image_url, is_primary, urutan 
+                        FROM property_images 
+                        WHERE property_id = ? 
+                        ORDER BY urutan ASC";
+            $stmtImg = $this->db->prepare($sqlImages);
+            $stmtImg->execute([$propertyId]);
+            
+            // Simpan sebagai array asosiatif agar Anda bisa mengakses image_url dan is_primary
+            $property['images'] = $stmtImg->fetchAll(PDO::FETCH_ASSOC);
+
+            return $property;
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            return false;
+        }
+    }
 }

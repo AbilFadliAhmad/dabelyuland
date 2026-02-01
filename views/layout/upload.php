@@ -75,27 +75,27 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="md:col-span-2">
               <label class="input-label">Judul Properti</label>
-              <input type="text" name="title" required class="input-field" placeholder="Villa Modern di Pusat Kota" />
+              <input type="text" value="<?= $property['title'] ?? '' ?>" name="title" required class="input-field" placeholder="Villa Modern di Pusat Kota" />
             </div>
             <div>
               <label class="input-label">Harga (IDR)</label>
               <div class="relative">
                 <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-sm">Rp</span>
-                <input type="number" name="price" required class="input-field pl-12" placeholder="0" />
+                <input value="<?= $property['price'] ?? 0 ?>" type="number" name="price" required class="input-field pl-12" placeholder="0" />
               </div>
             </div>
             <div class="grid grid-cols-3 gap-3">
               <div>
                 <label class="input-label">Kamar</label>
-                <input type="number" name="bedrooms" class="input-field text-center px-2" placeholder="0" />
+                <input type="number" value="<?= $property['bedrooms'] ?? 0 ?>" name="bedrooms" class="input-field text-center px-2" placeholder="0" />
               </div>
               <div>
                 <label class="input-label">Toilet</label>
-                <input type="number" name="bathrooms" class="input-field text-center px-2" placeholder="0" />
+                <input type="number" value="<?= $property['bathrooms'] ?? 0 ?>" name="bathrooms" class="input-field text-center px-2" placeholder="0" />
               </div>
               <div>
                 <label class="input-label">Luas m²</label>
-                <input type="number" name="building_area" class="input-field text-center px-2" placeholder="0" />
+                <input type="number" value="<?= $property['building_area'] ?? 0 ?>" name="building_area" class="input-field text-center px-2" placeholder="0" />
               </div>
             </div>
           </div>
@@ -109,42 +109,25 @@
             <h3 class="text-xl font-extrabold mb-2">Kategori Layanan Dabelyuland</h3>
             <p class="text-sm text-gray-500 mb-6">Pilih kategori properti atau jasa yang ingin Anda tampilkan.</p>
            
-            <div class="flex flex-wrap gap-3" id="category-container">
-           
-            <label class="cursor-pointer">
-                <input type="radio" name="category" value="Kantor" class="hidden peer">
-                <span class="px-6 py-3 rounded-2xl border-2 border-gray-100 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary font-bold transition-all block text-sm">Kantor</span>
-            </label>
-
-
-            <label class="cursor-pointer">
-                <input type="radio" name="category" value="Gudang" class="hidden peer">
-                <span class="px-6 py-3 rounded-2xl border-2 border-gray-100 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary font-bold transition-all block text-sm">Gudang</span>
-            </label>
-
-
-            <label class="cursor-pointer">
-                <input type="radio" name="category" value="Rumah" class="hidden peer">
-                <span class="px-6 py-3 rounded-2xl border-2 border-gray-100 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary font-bold transition-all block text-sm">Rumah</span>
-            </label>
-
-
-            <label class="cursor-pointer">
-                <input type="radio" name="category" value="Ruko" class="hidden peer">
-                <span class="px-6 py-3 rounded-2xl border-2 border-gray-100 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary font-bold transition-all block text-sm">Ruko</span>
-            </label>
-
-
-            <label class="cursor-pointer">
-                <input type="radio" name="category" value="Apartemen" class="hidden peer">
-                <span class="px-6 py-3 rounded-2xl border-2 border-gray-100 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary font-bold transition-all block text-sm">Apartemen</span>
-            </label>
-
-
-            <label class="cursor-pointer">
-                <input type="radio" name="category" value="Tanah" class="hidden peer">
-                <span class="px-6 py-3 rounded-2xl border-2 border-gray-100 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary font-bold transition-all block text-sm">Tanah</span>
-            </label>
+          <div class="flex flex-wrap gap-3" id="category-container">
+            <?php
+            // Daftar kategori agar kode lebih bersih (DRY - Don't Repeat Yourself)
+            $categories = ['Kantor', 'Gudang', 'Rumah', 'Ruko', 'Apartemen', 'Tanah'];
+            
+            foreach ($categories as $cat) :
+            ?>
+                <label class="cursor-pointer">
+                    <input type="radio" 
+                          name="category" 
+                          value="<?= $cat; ?>" 
+                          class="hidden peer"
+                          <?= ($property['category'] ?? '' == $cat) ? 'checked' : ''; ?>
+                          >
+                    <span class="px-6 py-3 rounded-2xl border-2 border-gray-100 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary font-bold transition-all block text-sm">
+                        <?= $cat; ?>
+                    </span>
+                </label>
+            <?php endforeach; ?>
         </div>
         </section>
 
@@ -154,22 +137,58 @@
           </div>
           <h3 class="text-xl font-extrabold mb-2">Deskripsi Detail</h3>
           <p class="text-sm text-gray-500 mb-6">Ceritakan keunggulan properti Anda kepada calon pembeli.</p>
-          <textarea name="description" rows="5" class="input-field resize-none py-4" placeholder="Tulis deskripsi lengkap hunian di sini..."></textarea>
+          <textarea 
+              name="description" 
+              rows="5" 
+              class="input-field resize-none py-4" 
+              placeholder="Tulis deskripsi lengkap hunian di sini..."
+          ><?= htmlspecialchars($property['description'] ?? '') ?>
+          </textarea>
         </section>
 
         <section class="form-card">
           <div class="icon-badge">
-            <span class="material-symbols-outlined">star</span>
+              <span class="material-symbols-outlined">star</span>
           </div>
           <h3 class="text-xl font-extrabold mb-6">Fasilitas Properti</h3>
+          
           <div id="facility-container" class="space-y-3">
-            <div class="flex items-center gap-3">
-              <input type="text" name="facility_label[]" placeholder="Contoh: Wifi 500Mbps, AC, Kolam Renang" class="flex-1 input-field" />
-              <div class="w-10"></div>
-            </div>
+              <?php 
+              // Asumsikan $property['facilities'] berisi array string, misal: ['WiFi', 'AC']
+              // Jika data dari database berupa JSON string, jangan lupa di-json_decode dulu
+              $existing_facilities = $property['facilities'] ?? []; 
+              
+              if (!empty($existing_facilities)): 
+                  foreach ($existing_facilities as $index => $facility): 
+              ?>
+                  <div class="flex items-center gap-3 animate-in fade-in duration-300">
+                      <input type="text" name="facility_label[]" 
+                            value="<?= htmlspecialchars($facility) ?>" 
+                            placeholder="Contoh: Wifi 500Mbps" 
+                            class="flex-1 input-field" />
+                      
+                      <?php if ($index === 0): ?>
+                          <div class="w-10"></div> <?php else: ?>
+                          <button type="button" onclick="this.parentElement.remove()" class="text-red-400 hover:text-red-600 transition-colors p-2">
+                              <span class="material-symbols-outlined">delete</span>
+                          </button>
+                      <?php endif; ?>
+                  </div>
+              <?php 
+                  endforeach; 
+              else: 
+              ?>
+                  <div class="flex items-center gap-3">
+                      <input type="text" name="facility_label[]" placeholder="Contoh: Wifi 500Mbps, AC, Kolam Renang" class="flex-1 input-field" />
+                      <div class="w-10"></div>
+                  </div>
+              <?php endif; ?>
           </div>
-          <button type="button" onclick="addFacility()" class="mt-6 flex items-center gap-2 text-primary font-bold text-sm hover:underline"><span class="material-symbols-outlined text-lg">add_circle</span> Tambah Fasilitas Lain</button>
-        </section>
+
+          <button type="button" onclick="addFacility()" class="mt-6 flex items-center gap-2 text-primary font-bold text-sm hover:underline">
+              <span class="material-symbols-outlined text-lg">add_circle</span> Tambah Fasilitas Lain
+          </button>
+      </section>
 
         <section class="form-card">
           <div class="icon-badge">
@@ -189,9 +208,9 @@
           <input type="hidden" name="latitude" id="lat" />
           <input type="hidden" name="longitude" id="lng" />
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <input type="text" name="city" id="city" class="input-field" placeholder="Kota/Kabupaten" />
-            <input type="text" name="district" id="district" class="input-field" placeholder="Kecamatan" />
-            <textarea name="address_detail" rows="2" class="md:col-span-2 input-field" placeholder="Detail Alamat (Jalan, No. Rumah, Blok)"></textarea>
+            <input type="text" name="city" id="city" class="input-field" value="<?= $property['city'] ?? '' ?>" placeholder="Kota/Kabupaten" />
+            <input type="text" name="district" id="district" class="input-field" value="<?= $property['district'] ?? '' ?>" placeholder="Kecamatan" />
+            <textarea name="address_detail" rows="2" class="md:col-span-2 input-field" placeholder="Detail Alamat (Jalan, No. Rumah, Blok)"><?= $property['address_detail'] ?? '' ?></textarea>
           </div>
         </section>
 
@@ -236,8 +255,9 @@
       /* ==========================================
        JS LOGIC - ORIGINAL (Sesuai Kode Anda)
        ========================================== */
-      const defaultLat = -6.2,
-        defaultLng = 106.816666;
+      const defaultLat = <?= json_encode((float)($property['latitude'] ?? -6.2)) ?>;
+      const defaultLng = <?= json_encode((float)($property['longitude'] ?? 106.816666)) ?>;
+
       const map = L.map("map").setView([defaultLat, defaultLng], 13);
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "© OpenStreetMap" }).addTo(map);
       let marker = L.marker([defaultLat, defaultLng], { draggable: true }).addTo(map);
@@ -258,16 +278,16 @@
 
       // Fasilitas (Disederhanakan menjadi Label saja sesuai permintaan sebelumnya)
       function addFacility() {
-        const container = document.getElementById("facility-container");
-        const div = document.createElement("div");
-        div.className = "flex items-center gap-3 animate-in fade-in duration-300";
-        div.innerHTML = `
-            <input type="text" name="facility_label[]" placeholder="Label Fasilitas" class="flex-1 input-field" />
-            <button type="button" onclick="this.parentElement.remove()" class="text-red-400 hover:text-red-600 transition-colors p-2">
-                <span class="material-symbols-outlined">delete</span>
-            </button>
-        `;
-        container.appendChild(div);
+          const container = document.getElementById("facility-container");
+          const div = document.createElement("div");
+          div.className = "flex items-center gap-3 animate-in fade-in duration-300";
+          div.innerHTML = `
+              <input type="text" name="facility_label[]" placeholder="Label Fasilitas" class="flex-1 input-field" />
+              <button type="button" onclick="this.parentElement.remove()" class="text-red-400 hover:text-red-600 transition-colors p-2">
+                  <span class="material-symbols-outlined">delete</span>
+              </button>
+          `;
+          container.appendChild(div);
       }
 
       // Gambar Properti

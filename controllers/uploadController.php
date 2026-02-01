@@ -8,6 +8,8 @@ class UploadController {
     else if ($role == 'admin') echo "<script>window.location.href = 'index.php?page=dashboardAdmin';</script>";
 
     $action = $_GET['action'] ?? 'index';
+    $isEdit = $_GET['edit'] ?? false;
+    $propertyId = $_GET['property_id'] ?? null;
 
     switch ($action) {
         case 'async_upload':
@@ -19,8 +21,11 @@ class UploadController {
         default:
             require_once 'models/uploadModel.php';
             $model = new UploadModel();
+            $property = '';
+            if ($isEdit && $propertyId) $property = $model->getProperty($propertyId);
             // Buat draft kosong untuk mendapatkan ID
             $propertyId = $model->createDraft(); 
+            var_dump('hama: ', $property);
             include 'views/layout/upload.php';
             break;
     }
