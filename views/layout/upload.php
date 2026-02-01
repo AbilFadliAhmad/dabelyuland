@@ -51,9 +51,15 @@
   </head>
 
   <body class="bg-gray-50 text-gray-900 antialiased font-sans">
+    <div class="max-w-4xl mx-auto px-4 pt-8">
+    <a href="javascript:history.back()" class="group inline-flex items-center gap-2 text-gray-500 hover:text-primary transition-all duration-300">
+        <div class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-gray-100 shadow-sm group-hover:shadow-md group-hover:border-primary/20 transition-all">
+            <span class="material-symbols-outlined text-xl group-hover:-translate-x-1 transition-transform">arrow_back</span>
+        </div>
+        <span class="text-sm font-bold tracking-wide uppercase">Kembali</span>
+    </a>
     <main class="max-w-4xl mx-auto px-4 py-12">
       <div class="mb-12 text-center md:text-left">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-4"><span class="material-symbols-outlined text-sm">add_home</span> Admin Panel</div>
         <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">Tambah Properti Baru</h1>
         <p class="text-gray-500 mt-2 text-lg">Lengkapi detail properti Anda untuk dipublikasikan ke Dabelyuland.</p>
       </div>
@@ -93,6 +99,53 @@
               </div>
             </div>
           </div>
+        </section>
+
+        <!-- kategori -->
+        <section class="form-card">
+            <div class="icon-badge">
+                <span class="material-symbols-outlined">category</span>
+            </div>
+            <h3 class="text-xl font-extrabold mb-2">Kategori Layanan Dabelyuland</h3>
+            <p class="text-sm text-gray-500 mb-6">Pilih kategori properti atau jasa yang ingin Anda tampilkan.</p>
+           
+            <div class="flex flex-wrap gap-3" id="category-container">
+           
+            <label class="cursor-pointer">
+                <input type="radio" name="category" value="Kantor" class="hidden peer">
+                <span class="px-6 py-3 rounded-2xl border-2 border-gray-100 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary font-bold transition-all block text-sm">Kantor</span>
+            </label>
+
+
+            <label class="cursor-pointer">
+                <input type="radio" name="category" value="Gudang" class="hidden peer">
+                <span class="px-6 py-3 rounded-2xl border-2 border-gray-100 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary font-bold transition-all block text-sm">Gudang</span>
+            </label>
+
+
+            <label class="cursor-pointer">
+                <input type="radio" name="category" value="Rumah" class="hidden peer">
+                <span class="px-6 py-3 rounded-2xl border-2 border-gray-100 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary font-bold transition-all block text-sm">Rumah</span>
+            </label>
+
+
+            <label class="cursor-pointer">
+                <input type="radio" name="category" value="Ruko" class="hidden peer">
+                <span class="px-6 py-3 rounded-2xl border-2 border-gray-100 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary font-bold transition-all block text-sm">Ruko</span>
+            </label>
+
+
+            <label class="cursor-pointer">
+                <input type="radio" name="category" value="Apartemen" class="hidden peer">
+                <span class="px-6 py-3 rounded-2xl border-2 border-gray-100 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary font-bold transition-all block text-sm">Apartemen</span>
+            </label>
+
+
+            <label class="cursor-pointer">
+                <input type="radio" name="category" value="Tanah" class="hidden peer">
+                <span class="px-6 py-3 rounded-2xl border-2 border-gray-100 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary font-bold transition-all block text-sm">Tanah</span>
+            </label>
+        </div>
         </section>
 
         <section class="form-card">
@@ -154,6 +207,31 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          const loadMoreBtn = document.getElementById('loadMoreBtn');
+          const cards = document.querySelectorAll('.property-card');
+          let itemsShown = 6; // Jumlah awal yang tampil
+
+          if (loadMoreBtn) {
+              loadMoreBtn.addEventListener('click', function () {
+                  // Ambil 6 card berikutnya yang masih tersembunyi
+                  const hiddenCards = Array.from(cards).slice(itemsShown, itemsShown + 4);
+                  
+                  hiddenCards.forEach(card => {
+                      card.classList.remove('hidden');
+                      // Tambahkan animasi fade-in sederhana
+                      card.classList.add('animate-fade-in'); 
+                  });
+
+                  itemsShown += 6;
+
+                  // Sembunyikan tombol jika semua card sudah tampil
+                  if (itemsShown >= cards.length) {
+                      loadMoreBtn.parentElement.style.display = 'none';
+                  }
+              });
+          }
+      });
       const propertyId = "<?php echo $propertyId; ?>";
       /* ==========================================
        JS LOGIC - ORIGINAL (Sesuai Kode Anda)
@@ -310,13 +388,33 @@
       }
 
       function validateForm() {
-        const mainImage = document.querySelector(".image-input");
-        if (!mainImage || mainImage.files.length === 0) {
-          alert("Mohon unggah gambar utama (kotak pertama) sebagai foto sampul properti!");
-          mainImage.parentElement.classList.replace("border-primary", "border-red-500");
-          return false;
-        }
-        return true;
+          // 1. Validasi Gambar Utama
+          const mainImage = document.querySelector(".image-input");
+          if (!mainImage || mainImage.files.length === 0) {
+              alert("Mohon unggah gambar utama (kotak pertama) sebagai foto sampul properti!");
+              // Pastikan container mendapatkan perhatian visual
+              document.getElementById("container-file-1").scrollIntoView({ behavior: 'smooth', block: 'center' });
+              return false;
+          }
+
+          // 2. Validasi Kategori
+          // Mencari radio button yang dipilih dalam grup 'category'
+          const selectedCategory = document.querySelector('input[name="category"]:checked');
+          
+          if (!selectedCategory) {
+              alert("Silakan pilih salah satu Kategori Layanan!");
+              
+              // Opsional: Scroll ke bagian kategori agar user tahu mana yang harus diisi
+              document.getElementById("category-container").scrollIntoView({ behavior: 'smooth', block: 'center' });
+              
+              // Memberi border merah tipis pada container kategori sebagai penanda
+              const catContainer = document.getElementById("category-container");
+              catContainer.classList.add("p-2", "border-2", "border-red-500", "rounded-2xl");
+              
+              return false;
+          }
+
+          return true; // Semua validasi lolos, form akan dikirim
       }
 
       // Init slots

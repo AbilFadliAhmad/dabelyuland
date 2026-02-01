@@ -1,6 +1,12 @@
 <?php
 class UploadController {
     public function index() {
+    $role = $_SESSION['agent_role'] ?? 'guest';
+
+    // Check Role
+    if ($role == 'guest') echo "<script>window.location.href = 'index.php?page=login';</script>";
+    else if ($role == 'admin') echo "<script>window.location.href = 'index.php?page=dashboardAdmin';</script>";
+
     $action = $_GET['action'] ?? 'index';
 
     switch ($action) {
@@ -28,7 +34,8 @@ class UploadController {
             $success = $model->finalizeProperty($_POST);
 
             if ($success) {
-                echo "<script>alert('Properti berhasil disimpan!'); window.location='index.php';</script>";
+                // echo "<script>alert('Properti berhasil disimpan!'); window.location='index.php';</>";
+                echo "<script>alert('Properti berhasil disimpan!'); window.location='index.php?page=upload';</script>";
             } else {
                 echo "Gagal menyimpan data ke database.";
             }

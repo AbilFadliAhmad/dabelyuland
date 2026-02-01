@@ -1,5 +1,6 @@
 <?php 
 require_once 'config/database.php';
+session_start();
 
 // Router sederhana
 $page = isset($_GET['page']) ? $_GET['page'] : 'home';
@@ -44,6 +45,32 @@ $action = isset($_GET['action']) ? $_GET['action'] : null;
         },
       };
     </script>
+    <style type="text/tailwindcss">
+      .hide-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .hide-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+      .property-card {
+        min-width: 320px;
+        max-width: 320px;
+      }
+      @media (min-width: 1024px) {
+        .property-card {
+          min-width: calc((100% / 4) - 18px);
+          max-width: calc((100% / 4) - 18px);
+        }
+      }
+      @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(10px); }
+          to { opacity: 1; transform: translateY(0); }
+      }
+      .animate-fade-in {
+          animation: fadeIn 0.5s ease forwards;
+      }
+    </style>
     <style>
       .material-symbols-outlined {
         font-variation-settings:
@@ -58,13 +85,108 @@ $action = isset($_GET['action']) ? $_GET['action'] : null;
           "wght" 400,
           "GRAD" 0,
           "opsz" 24;
+      }body {
+        font-family: "Inter", sans-serif;
+      }
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 400,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      .filled-icon {
+        font-variation-settings: "FILL" 1;
+      }
+
+      .lightbox-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(8px); /* Membuat belakang buram */
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .lightbox-content {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        width: 90%;
+        max-width: 600px;
+      }
+
+      .main-photo-wrapper {
+        flex-grow: 1;
+        aspect-ratio: 1 / 1; /* Memaksa ukuran 1:1 */
+        overflow: hidden;
+        border-radius: 12px;
+        background-color: #000;
+      }
+
+      .main-photo-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Crop gambar agar memenuhi kotak */
+      }
+
+      .nav-btn {
+        background: white;
+        border: none;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        font-size: 20px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        flex-shrink: 0;
+      }
+
+      .nav-btn:hover {
+        background: #f1f5f9;
+        transform: scale(1.1);
+      }
+
+      .close-lightbox {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        color: white;
+        font-size: 40px;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+      .scale-in-center {
+        animation: scale-in-center 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+      }
+      @keyframes scale-in-center {
+        0% {
+          transform: scale(0);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
       }
     </style>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   </head>
 <body class="bg-gray-50 dark:bg-gray-900">
-    <?php include 'views/templates/navbar.php'; ?>
+  
+    <?php if (isset($page) && $page !== 'upload'): 
+    include 'views/templates/navbar.php'; 
+endif; ?>
 
     <!-- KONTEN -->
     <?php 
@@ -80,16 +202,37 @@ $action = isset($_GET['action']) ? $_GET['action'] : null;
       require_once 'controllers/uploadController.php';
       $controller = new UploadController();
       $controller->index();
-    } else if ($page == 'map') {
-      var_dump('ini map lho ya');
-      require_once 'controllers/getLocation.php';
-      $controller = new LocationController();
-      $controller->getLocation();
-    }
+    } else if ($page == 'portfolio') {
+      require_once 'controllers/portfolioController.php';
+      $controller = new PortfolioController();
+      $controller->index();
+    } else if ($page == 'property') {
+      require_once 'controllers/propertyController.php';
+      $controller = new PropertyController();
+      $controller->index();
+    } else if ($page == 'login') {
+      require_once 'controllers/loginController.php';
+      $controller = new LoginController();
+      $controller->index();
+    } else if ($page == 'dashboardAdmin') {
+      require_once 'controllers/dashboardAdminController.php';
+      $controller = new DashboardAdminController();
+      $controller->index();
+    } else if ($page == 'list-property') {
+      require_once 'controllers/propertyController.php';
+      $controller = new PropertyController();
+      $controller->index();
+    } else if ($page == 'list-property') {
+      require_once 'controllers/propertyController.php';
+      $controller = new PropertyController();
+      $controller->index();
+    } 
     // Tambahkan route lain di sini
     ?>
 
 <!-- Footer -->
-    <?php include 'views/templates/footer.php'; ?>
+    <?php if (isset($page) && $page !== 'upload'): 
+    include 'views/templates/footer.php'; 
+endif; ?>
 </body>
 </html>

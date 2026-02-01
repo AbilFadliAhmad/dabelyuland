@@ -122,3 +122,36 @@
         </div>
       </section>
     </main>
+    <script>
+      const filterButtons = document.querySelectorAll(".filter-btn");
+      const projectCards = document.querySelectorAll(".project-card");
+
+      filterButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          // 1. Ambil kategori dari ID (all, design, built)
+          const category = button.id.replace("filter-", "");
+
+          // 2. Update styling tombol aktif
+          filterButtons.forEach((btn) => {
+            btn.classList.remove("bg-primary", "text-white", "shadow-md");
+            btn.classList.add("text-slate-custom", "dark:text-gray-400");
+          });
+          button.classList.add("bg-primary", "text-white", "shadow-md");
+          button.classList.remove("text-slate-custom", "dark:text-gray-400");
+
+          // 3. Logika Filter Card
+          projectCards.forEach((card) => {
+            const cardCategory = card.getAttribute("data-category");
+
+            if (category === "all" || cardCategory === category) {
+              card.style.display = "block";
+              // Tambahkan sedikit animasi masuk
+              setTimeout(() => (card.style.opacity = "1"), 10);
+            } else {
+              card.style.display = "none";
+              card.style.opacity = "0";
+            }
+          });
+        });
+      });
+    </script>

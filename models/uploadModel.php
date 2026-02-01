@@ -12,7 +12,8 @@ class UploadModel {
         try {
             // Kita buat record dengan status 'draft'
             // Pastikan tabel properties Anda memiliki kolom 'status'
-            $sql = "INSERT INTO properties (title, status) VALUES ('Draft Properti', 'draft')";
+            $agent_id = $_SESSION['agent_id'];
+            $sql = "INSERT INTO properties (title, status, agent_id) VALUES ('Draft Properti', 'draft', $agent_id)";
             $this->db->prepare($sql)->execute();
             
             return $this->db->lastInsertId();
@@ -36,46 +37,72 @@ class UploadModel {
     // Fungsi final untuk update data draft menjadi publik
     public function finalizeProperty($data) {
         try {
-            var_dump($data,'ini data');
             $this->db->beginTransaction();
 
-            // 1. Update data utama properti dan ubah status menjadi 'published'
+            // 1. Cari ID Kategori berdasarkan nama (Kantor, Gudang, dll)
+            $sqlCat = "SELECT id FROM categories WHERE name = :cat_name LIMIT 1";
+            $stmtCat = $this->db->prepare($sqlCat);
+            $stmtCat->execute([':cat_name' => $data['category']]);
+            $category = $stmtCat->fetch(PDO::FETCH_ASSOC);
+            
+            // Gunakan ID yang ditemukan, atau NULL jika tidak ditemukan
+            $categoryId = $category ? $category['id'] : null;
+
+            // 2. Update data utama properti (Termasuk category_id)
             $sqlProp = "UPDATE properties SET 
+                        category_id = :category_id,
                         title = :title, 
                         price = :price, 
                         bedrooms = :bedrooms, 
                         bathrooms = :bathrooms, 
                         building_area = :building_area,
                         description = :description,
-                        status = 'published' 
+                        status = 'pending' 
                         WHERE id = :id";
             
             $stmt = $this->db->prepare($sqlProp);
             $stmt->execute([
+                ':category_id'   => $categoryId, // ID hasil pencarian tadi
                 ':title'         => $data['title'],
-                ':price'         => $data['price'],
-                ':bedrooms'      => $data['bedrooms'],
-                ':bathrooms'     => $data['bathrooms'],
-                ':building_area' => $data['building_area'],
-                ':description' => $data['description'],
+                ':price'         => $data['price'] ?? 0,
+                ':bedrooms'      => (!empty($data['bedrooms'])) ? $data['bedrooms'] : 0,
+                ':bathrooms'     => (!empty($data['bathrooms'])) ? $data['bathrooms'] : 0,
+                ':building_area' => (!empty($data['building_area'])) ? $data['building_area'] : 0,
+                ':description'   => $data['description'],
                 ':id'            => $data['property_id']
             ]);
 
-            // 2. Insert/Update Lokasi
+            // 3. Insert/Update Lokasi
             $sqlLoc = "INSERT INTO locations (property_id, city, district, address_detail, latitude, longitude) 
-                       VALUES (?, ?, ?, ?, ?, ?)
-                       ON DUPLICATE KEY UPDATE city=VALUES(city), district=VALUES(district)";
+                    VALUES (?, ?, ?, ?, ?, ?)
+                    ON DUPLICATE KEY UPDATE 
+                    city=VALUES(city), 
+                    district=VALUES(district), 
+                    address_detail=VALUES(address_detail),
+                    latitude=VALUES(latitude),
+                    longitude=VALUES(longitude)";
             $this->db->prepare($sqlLoc)->execute([
-                $data['property_id'], $data['city'], $data['district'], $data['address_detail'], $data['latitude'], $data['longitude']
+                $data['property_id'], 
+                $data['city'], 
+                $data['district'], 
+                $data['address_detail'], 
+                $data['latitude'], 
+                $data['longitude']
             ]);
 
-            // 3. Insert Fasilitas
+            // 4. Insert Fasilitas
             if (isset($data['facility_label'])) {
+                // Hapus fasilitas lama dulu agar tidak duplikat saat edit/finalize ulang
+                $this->db->prepare("DELETE FROM property_facilities WHERE property_id = ?")
+                        ->execute([$data['property_id']]);
+
                 $sqlFac = "INSERT INTO property_facilities (property_id, icon_name, facility_label) VALUES (?, ?, ?)";
                 $stmtFac = $this->db->prepare($sqlFac);
                 foreach ($data['facility_label'] as $key => $label) {
                     if (!empty($label)) {
-                        $stmtFac->execute([$data['property_id'], '', $label]);
+                        // Ambil ikon sesuai index jika ada
+                        $icon = $data['facility_icon'][$key] ?? '';
+                        $stmtFac->execute([$data['property_id'], $icon, $label]);
                     }
                 }
             }
@@ -83,60 +110,10 @@ class UploadModel {
             $this->db->commit();
             return true;
         } catch (Exception $e) {
-            var_dump('errorkang duar',$e);
-            $this->db->rollBack();
+        $this->db->rollBack();
+            error_log($e->getMessage()); // Simpan error ke log untuk debugging
             return false;
         }
     }
 
-    public function insertProperty($data, $images) {
-        try {
-            $this->db->beginTransaction();
-
-            // 1. Insert ke tabel Properties
-            $sqlProp = "INSERT INTO properties (title price, bedrooms, bathrooms, building_area) 
-                        VALUES (:title, :price, :bedrooms, :bathrooms, :building_area)";
-            $stmt = $this->db->prepare($sqlProp);
-            $stmt->execute([
-                ':title'         => $data['title'],
-                ':price'         => $data['price'],
-                ':bedrooms'      => $data['bedrooms'],
-                ':bathrooms'     => $data['bathrooms'],
-                ':building_area' => $data['building_area']
-            ]);
-            $propertyId = $this->db->lastInsertId();
-
-            // 2. Insert ke tabel Locations
-            $sqlLoc = "INSERT INTO locations (property_id, city, district, address_detail, latitude, longitude) 
-                       VALUES (?, ?, ?, ?, ?, ?)";
-            $this->db->prepare($sqlLoc)->execute([
-                $propertyId, $data['city'], $data['district'], $data['address_detail'], $data['latitude'], $data['longitude']
-            ]);
-
-            // 3. Insert Fasilitas (Looping)
-            if (isset($data['facility_label'])) {
-                $sqlFac = "INSERT INTO property_facilities (property_id, icon_name, facility_label) VALUES (?, ?, ?)";
-                $stmtFac = $this->db->prepare($sqlFac);
-                foreach ($data['facility_label'] as $key => $label) {
-                    if (!empty($label)) {
-                        $stmtFac->execute([$propertyId, $data['facility_icon'][$key], $label]);
-                    }
-                }
-            }
-
-            // 4. Insert Gambar (Looping)
-            $sqlImg = "INSERT INTO property_images (property_id, image_url) VALUES (?, ?)";
-            $stmtImg = $this->db->prepare($sqlImg);
-            foreach ($images as $url) {
-                $stmtImg->execute([$propertyId, $url]);
-            }
-
-            $this->db->commit();
-            return true;
-        } catch (Exception $e) {
-            var_dump('errorkang', $e);
-            $this->db->rollBack();
-            return false;
-        }
-    }
 }

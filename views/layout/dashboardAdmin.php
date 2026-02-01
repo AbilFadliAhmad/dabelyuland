@@ -1,0 +1,121 @@
+<div class="flex min-h-screen">
+      <main class="flex-1 p-8">
+        <div class="max-w-7xl mx-auto">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
+            <div>
+              <h1 class="text-3xl font-bold text-slate-900">Kelola Properti</h1>
+              <p class="text-slate-500 mt-1">Pantau dan atur listing properti Anda di sini.</p>
+            </div>
+            <button class="flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-2xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-100">
+              <span class="material-symbols-outlined">add_circle</span>
+              Tambah Unit Baru
+            </button>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div
+              onclick="window.location.href = 'index.php?page=dashboardAdmin&status=all'"
+              class="cursor-pointer group p-6 bg-white rounded-[2rem] border-2 <?= (!isset($_GET['status']) || $_GET['status'] == 'all') ? 'border-blue-600' : 'border-transparent' ?> hover:border-blue-200 transition-all shadow-sm"
+            >
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center">
+                  <span class="material-symbols-outlined">inventory_2</span>
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-slate-500 uppercase tracking-wider">Total Properti</p>
+                  <h3 class="text-2xl font-bold text-slate-900"><?= $counts['total'] ?></h3>
+                </div>
+              </div>
+            </div>
+
+            <div
+              onclick="window.location.href = 'index.php?page=dashboardAdmin&status=pending'"
+              class="cursor-pointer group p-6 bg-white rounded-[2rem] border-2 <?= (isset($_GET['status']) && $_GET['status'] == 'pending') ? 'border-amber-500' : 'border-transparent' ?> hover:border-amber-200 transition-all shadow-sm"
+            >
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-amber-50 text-amber-500 rounded-2xl flex items-center justify-center">
+                  <span class="material-symbols-outlined">hourglass_empty</span>
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-slate-500 uppercase tracking-wider">Menunggu Verifikasi</p>
+                  <h3 class="text-2xl font-bold text-slate-900"><?= $counts['pending'] ?></h3>
+                </div>
+              </div>
+            </div>
+
+            <div
+              onclick="window.location.href = 'index.php?page=dashboardAdmin&status=published'"
+              class="cursor-pointer group p-6 bg-white rounded-[2rem] border-2 <?= (isset($_GET['status']) && $_GET['status'] == 'published') ? 'border-emerald-500' : 'border-transparent' ?> hover:border-emerald-200 transition-all shadow-sm"
+            >
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-emerald-50 text-emerald-500 rounded-2xl flex items-center justify-center">
+                  <span class="material-symbols-outlined">verified</span>
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-slate-500 uppercase tracking-wider">Aktif Tayang</p>
+                  <h3 class="text-2xl font-bold text-slate-900"><?= $counts['published'] ?></h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-white rounded-[2.5rem] border border-slate-100 shadow-sm overflow-hidden">
+            <div class="p-8 border-b border-slate-50 flex justify-between items-center">
+              <h4 class="text-lg font-bold text-slate-800">Daftar Properti Anda</h4>
+              <div class="flex gap-2">
+                <div class="relative">
+                  <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-sm">search</span>
+                  <input type="text" placeholder="Cari unit..." class="pl-10 pr-4 py-2 bg-slate-50 border-none rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-100 w-64" />
+                </div>
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left border-collapse">
+                <thead>
+                  <tr class="bg-slate-50/50">
+                    <th class="px-8 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Info Unit</th>
+                    <th class="px-8 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Spesifikasi</th>
+                    <th class="px-8 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Harga</th>
+                    <th class="px-8 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Status</th>
+                    <th class="px-8 py-4 text-xs font-bold text-slate-400 uppercase tracking-widest">Aksi</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-50">
+                    <?php foreach ($properties as $index => $property) : ?>
+                        <tr class="hover:bg-slate-50/50 transition-colors">
+                            <td class="px-8 py-6">
+                            <div class="flex flex-col">
+                                <span class="font-bold text-slate-800"><?= $property['title'] ?></span>
+                                <!-- <span class="text-xs text-slate-400 mt-1">ID: #PROP-108</span> -->
+                            </div>
+                            </td>
+                            <td class="px-8 py-6">
+                            <div class="flex gap-3 text-slate-600">
+                                <div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">bed</span> <small><?= $property['bedrooms'] ?? 0 ?></small></div>
+                                <div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">bathtub</span> <small><?= $property['bathrooms'] ?? 0 ?></small></div>
+                                <div class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">square_foot</span> <small><?= $property['building_area'] ?? 0 ?>m²</small></div>
+                            </div>
+                            </td>
+                            <td class="px-8 py-6">
+                            <span class="font-bold text-blue-600 italic">Rp <?= number_format($property['price'] ?? 0, 0, ',', '.') ?></span>
+                            </td>
+                            <td class="px-8 py-6">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                                <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span> <?= $property['status'] ?>
+                            </span>
+                            </td>
+                            <td class="px-8 py-6">
+                            <div class="flex gap-2">
+                                <button class="p-2 text-slate-400 hover:text-blue-600 transition-colors"><span class="material-symbols-outlined text-lg">edit</span></button>
+                                <button class="p-2 text-slate-400 hover:text-red-500 transition-colors"><span class="material-symbols-outlined text-lg">delete</span></button>
+                            </div>
+                            </td>
+                        </tr>
+                    <?php endforeach ?>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>

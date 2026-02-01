@@ -1,278 +1,516 @@
 <!doctype html>
-<html lang="id">
-  <link rel="stylesheet" href="./public/css/index.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<html lang="id" class="light">
   <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Dabelyuland Indonesia</title>
+    <link rel="icon" type="image/png" href="../dabelyu logo.png" />
+    <title>Jual Properti - Dabelyuland Indonesia</title>
+
+
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+
     <script id="tailwind-config">
       tailwind.config = {
-        darkMode: "class",
         theme: {
           extend: {
             colors: {
               primary: "#135bec",
               "primary-dark": "#0f4bc2",
-              "background-light": "#f6f6f8",
-              "background-dark": "#101622",
-              "surface-light": "#ffffff",
-              "surface-dark": "#1a2332",
-              "text-main": "#0d121b",
-              "text-muted": "#4c669a",
-              "border-light": "#e7ebf3",
-              "border-dark": "#2a3441",
             },
             fontFamily: {
-              display: ["Inter", "sans-serif"],
+              sans: ["'Plus Jakarta Sans'", "sans-serif"],
             },
-            borderRadius: { DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", "2xl": "1rem", full: "9999px" },
           },
         },
       };
     </script>
-    <style>
-      .material-symbols-outlined {
-        font-variation-settings:
-          "FILL" 0,
-          "wght" 400,
-          "GRAD" 0,
-          "opsz" 24;
+
+
+    <style type="text/tailwindcss">
+      @layer components {
+        .form-card {
+          @apply bg-white rounded-3xl shadow-sm border border-gray-100 p-6 md:p-8 mb-8 transition-all hover:shadow-md;
+        }
+        .input-label {
+          @apply block text-sm font-bold text-gray-700 mb-2 ml-1;
+        }
+        .input-field {
+          @apply w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all outline-none text-gray-900 bg-gray-50/50;
+        }
+        .icon-badge {
+          @apply p-2 bg-primary/10 text-primary rounded-xl mb-4 inline-flex;
+        }
       }
-      .icon-filled {
-        font-variation-settings:
-          "FILL" 1,
-          "wght" 400,
-          "GRAD" 0,
-          "opsz" 24;
+      #map {
+        height: 350px;
+        z-index: 1;
+        border-radius: 1.5rem;
       }
     </style>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   </head>
-  <body class="bg-gray-50 dark:bg-gray-900">
-    <div class="p-6">
-      <div class="max-w-4xl mx-auto bg-white p-8 rounded-xl shadow-md">
-        <h2 class="text-2xl font-bold mb-6 text-gray-800">Tambah Properti Baru</h2>
 
-        <form action="index.php?page=upload&action=store" method="POST" enctype="multipart/form-data" onsubmit="return validateForm();" class="space-y-6">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Judul Properti</label>
-              <input type="text" name="title" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 bg-gray-50 focus:ring-blue-500 border" />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Harga (IDR)</label>
-              <input type="number" name="price" required class="mt-1 block w-full border-gray-300 rounded-md shadow-sm p-2 bg-gray-50 focus:ring-blue-500 border" />
-            </div>
-          </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Kamar Tidur</label>
-              <input type="number" name="bedrooms" class="mt-1 block w-full border p-2 rounded-md" />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Kamar Mandi</label>
-              <input type="number" name="bathrooms" class="mt-1 block w-full border p-2 rounded-md" />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-700">Luas Bangun (m2)</label>
-              <input type="number" name="building_area" class="mt-1 block w-full border p-2 rounded-md" />
-            </div>
-          </div>
+  <body class="bg-gray-50 text-gray-900 antialiased font-sans">
 
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Fasilitas (Ikon & Label)</label>
-            <div id="facility-container" class="space-y-2">
-              <div class="flex gap-2">
-                <input type="text" name="facility_icon[]" placeholder="Ikon (e.g. wifi)" class="flex-1 border p-2 rounded-md" />
-                <input type="text" name="facility_label[]" placeholder="Label (e.g. Wifi 500Mbps)" class="flex-2 border p-2 rounded-md" />
-              </div>
-            </div>
-            <button type="button" onclick="addFacility()" class="mt-2 text-sm text-blue-600 font-semibold">+ Tambah Fasilitas Lain</button>
-          </div>
 
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-3">Foto Properti (Minimal 5 Foto)</label>
+    <div class="max-w-4xl mx-auto px-4 pt-8">
+    <a href="javascript:history.back()" class="group inline-flex items-center gap-2 text-gray-500 hover:text-primary transition-all duration-300">
+        <div class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-gray-100 shadow-sm group-hover:shadow-md group-hover:border-primary/20 transition-all">
+            <span class="material-symbols-outlined text-xl group-hover:-translate-x-1 transition-transform">arrow_back</span>
+        </div>
+        <span class="text-sm font-bold tracking-wide uppercase">Kembali</span>
+    </a>
+</div>
 
-            <div id="image-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
 
-            <p class="text-xs text-gray-500 mt-3">* Kotak baru akan muncul otomatis setelah semua kotak terisi gambar.</p>
-          </div>
-
-          <div class="card bg-gray-50 p-4 rounded-lg border border-gray-200">
-            <label class="block text-sm font-bold text-gray-700 mb-2">Lokasi Properti</label>
-
-            <div id="map" class="w-full h-64 rounded-md mb-4 shadow-inner border" style="z-index: 1"></div>
-
-            <!-- Longtitude dan Langtitude -->
-            <input type="hidden" name="latitude" id="lat" />
-            <input type="hidden" name="longitude" id="lng" />
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-xs font-medium text-gray-500">Kota/Kabupaten</label>
-                <input type="text" name="city" id="city" placeholder="Masukkan Kota" class="mt-1 block w-full border-gray-300 rounded-md p-2 text-sm border focus:ring-blue-500" />
-              </div>
-              <div>
-                <label class="block text-xs font-medium text-gray-500">Kecamatan</label>
-                <input type="text" name="district" id="district" placeholder="Masukkan Kecamatan" class="mt-1 block w-full border-gray-300 rounded-md p-2 text-sm border focus:ring-blue-500" />
-              </div>
-              <div class="md:col-span-2">
-                <label class="block text-xs font-medium text-gray-500">Detail Alamat</label>
-                <textarea name="address_detail" id="address_detail" rows="2" placeholder="Nama Jalan, Blok, No. Rumah" class="mt-1 block w-full border-gray-300 rounded-md p-2 text-sm border focus:ring-blue-500"></textarea>
-              </div>
-            </div>
-          </div>
-
-          <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700 transition">SIMPAN PROPERTI</button>
-        </form>
+    <main class="max-w-4xl mx-auto px-4 py-12">
+      <div class="mb-12 text-center md:text-left">
+        <h1 class="text-4xl font-extrabold text-gray-900 tracking-tight">Tambah Properti Baru</h1>
+        <p class="text-gray-500 mt-2 text-lg">Lengkapi detail properti Anda untuk dipublikasikan ke Dabelyuland.</p>
       </div>
-    </div>
 
+
+      <form action="index.php?page=upload&action=store" method="POST" onsubmit="return validateForm();">
+        <input type="hidden" name="property_id" value=<?= $propertyId ?>
+        <section class="form-card">
+          <div class="icon-badge">
+            <span class="material-symbols-outlined">info</span>
+          </div>
+          <h3 class="text-xl font-extrabold mb-6">Informasi Utama</h3>
+
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="md:col-span-2">
+              <label class="input-label">Judul Properti</label>
+              <input type="text" name="title" required class="input-field" placeholder="Villa Modern di Pusat Kota" />
+            </div>
+            <div>
+              <label class="input-label">Harga (IDR)</label>
+              <div class="relative">
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold text-sm">Rp</span>
+                <input type="number" name="price" required class="input-field pl-12" placeholder="0" />
+              </div>
+            </div>
+            <div class="grid grid-cols-3 gap-3">
+              <div>
+                <label class="input-label">Kamar</label>
+                <input type="number" name="bedrooms" class="input-field text-center px-2" placeholder="0" />
+              </div>
+              <div>
+                <label class="input-label">Toilet</label>
+                <input type="number" name="bathrooms" class="input-field text-center px-2" placeholder="0" />
+              </div>
+              <div>
+                <label class="input-label">Luas m²</label>
+                <input type="number" name="building_area" class="input-field text-center px-2" placeholder="0" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <!-- kategori -->
+        <section class="form-card">
+            <div class="icon-badge">
+                <span class="material-symbols-outlined">category</span>
+            </div>
+            <h3 class="text-xl font-extrabold mb-2">Kategori Layanan Dabelyuland</h3>
+            <p class="text-sm text-gray-500 mb-6">Pilih kategori properti atau jasa yang ingin Anda tampilkan.</p>
+           
+            <div class="flex flex-wrap gap-3" id="category-container">
+           
+            <label class="cursor-pointer">
+                <input type="radio" name="category" value="Kantor" class="hidden peer">
+                <span class="px-6 py-3 rounded-2xl border-2 border-gray-100 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary font-bold transition-all block text-sm">Kantor</span>
+            </label>
+
+
+            <label class="cursor-pointer">
+                <input type="radio" name="category" value="Gudang" class="hidden peer">
+                <span class="px-6 py-3 rounded-2xl border-2 border-gray-100 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary font-bold transition-all block text-sm">Gudang</span>
+            </label>
+
+
+            <label class="cursor-pointer">
+                <input type="radio" name="category" value="Rumah" class="hidden peer">
+                <span class="px-6 py-3 rounded-2xl border-2 border-gray-100 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary font-bold transition-all block text-sm">Rumah</span>
+            </label>
+
+
+            <label class="cursor-pointer">
+                <input type="radio" name="category" value="Ruko" class="hidden peer">
+                <span class="px-6 py-3 rounded-2xl border-2 border-gray-100 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary font-bold transition-all block text-sm">Ruko</span>
+            </label>
+
+
+            <label class="cursor-pointer">
+                <input type="radio" name="category" value="Apartemen" class="hidden peer">
+                <span class="px-6 py-3 rounded-2xl border-2 border-gray-100 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary font-bold transition-all block text-sm">Apartemen</span>
+            </label>
+
+
+            <label class="cursor-pointer">
+                <input type="radio" name="category" value="Tanah" class="hidden peer">
+                <span class="px-6 py-3 rounded-2xl border-2 border-gray-100 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary font-bold transition-all block text-sm">Tanah</span>
+            </label>
+        </div>
+        </section>
+
+
+        <!-- deskripsi -->
+        <section class="form-card">
+          <div class="icon-badge">
+            <span class="material-symbols-outlined">description</span>
+          </div>
+          <h3 class="text-xl font-extrabold mb-2">Deskripsi Detail</h3>
+          <p class="text-sm text-gray-500 mb-6">Ceritakan keunggulan properti Anda kepada calon pembeli.</p>
+          <textarea name="description" rows="5" class="input-field resize-none py-4" placeholder="Tulis deskripsi lengkap hunian di sini..."></textarea>
+        </section>
+
+
+       
+
+
+        <!-- fasilitas -->
+        <section class="form-card">
+          <div class="icon-badge">
+            <span class="material-symbols-outlined">star</span>
+          </div>
+          <h3 class="text-xl font-extrabold mb-6">Fasilitas Properti</h3>
+          <div id="facility-container" class="space-y-3">
+            <div class="flex items-center gap-3">
+              <input type="text" name="facility_label[]" placeholder="Contoh: Wifi 500Mbps, AC, Kolam Renang" class="flex-1 input-field" />
+              <div class="w-10"></div>
+            </div>
+          </div>
+          <button type="button" onclick="addFacility()" class="mt-6 flex items-center gap-2 text-primary font-bold text-sm hover:underline"><span class="material-symbols-outlined text-lg">add_circle</span> Tambah Fasilitas Lain</button>
+        </section>
+
+
+        <!-- foto -->
+        <section class="form-card">
+          <div class="icon-badge">
+            <span class="material-symbols-outlined">photo_library</span>
+          </div>
+          <h3 class="text-xl font-extrabold mb-2">Galeri Foto</h3>
+          <p class="text-sm text-gray-500 mb-8">Minimal 5 foto. Gunakan kotak pertama sebagai foto sampul utama.</p>
+          <div id="image-grid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4"></div>
+        </section>
+
+
+        <!-- maps -->
+        <section class="form-card">
+          <div class="icon-badge">
+            <span class="material-symbols-outlined">location_on</span>
+          </div>
+          <h3 class="text-xl font-extrabold mb-6">Lokasi Properti</h3>
+          <div id="map" class="mb-8 border border-gray-100 shadow-inner"></div>
+          <input type="hidden" name="latitude" id="lat" />
+          <input type="hidden" name="longitude" id="lng" />
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <input type="text" name="city" id="city" class="input-field" placeholder="Kota/Kabupaten" />
+            <input type="text" name="district" id="district" class="input-field" placeholder="Kecamatan" />
+            <textarea name="address_detail" rows="2" class="md:col-span-2 input-field" placeholder="Detail Alamat (Jalan, No. Rumah, Blok)"></textarea>
+          </div>
+        </section>
+
+
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6 py-8">
+          <p class="text-sm text-gray-400 font-medium text-center md:text-left leading-relaxed">
+            Dengan menekan simpan, data akan dikirim ke <br />
+            sistem verifikasi Dabelyuland Indonesia.
+          </p>
+          <button type="submit" class="w-full md:w-auto bg-primary hover:bg-primary-dark text-white px-12 py-4 rounded-2xl font-black text-lg shadow-xl shadow-primary/20 transition-all hover:-translate-y-1">SIMPAN PROPERTI</button>
+        </div>
+      </form>
+    </main>
+
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-      // Koordinat awal (Jakarta)
-      const defaultLat = -6.2;
-      const defaultLng = 106.816666;
-
-      // Inisialisasi Peta
+      const propertyId = "<?php echo $propertyId; ?>";
+      /* ==========================================
+       JS LOGIC - ORIGINAL (Sesuai Kode Anda)
+       ========================================== */
+      const defaultLat = -6.2,
+        defaultLng = 106.816666;
       const map = L.map("map").setView([defaultLat, defaultLng], 13);
-
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: "© OpenStreetMap",
-      }).addTo(map);
-
-      // Marker yang bisa digeser
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", { attribution: "© OpenStreetMap" }).addTo(map);
       let marker = L.marker([defaultLat, defaultLng], { draggable: true }).addTo(map);
 
-      // Set nilai awal input hidden
+
       document.getElementById("lat").value = defaultLat;
       document.getElementById("lng").value = defaultLng;
 
-      // Fungsi untuk update input hidden
+
       function updateCoords(lat, lng) {
         document.getElementById("lat").value = lat;
         document.getElementById("lng").value = lng;
-        console.log(`Koordinat tersimpan: ${lat}, ${lng}`);
       }
 
-      // Event: Marker digeser
-      marker.on("dragend", function (e) {
-        const pos = marker.getLatLng();
-        updateCoords(pos.lat, pos.lng);
-      });
 
-      // Event: Peta diklik
-      map.on("click", function (e) {
+      marker.on("dragend", (e) => updateCoords(marker.getLatLng().lat, marker.getLatLng().lng));
+      map.on("click", (e) => {
         marker.setLatLng(e.latlng);
         updateCoords(e.latlng.lat, e.latlng.lng);
       });
+
+
+      // Fasilitas (Disederhanakan menjadi Label saja sesuai permintaan sebelumnya)
+      function addFacility() {
+    const container = document.getElementById('facility-container');
+    const facilityCount = container.querySelectorAll('.flex').length;
+
+
+   
+
+
+    // Tambah baris input baru
+    const newRow = document.createElement('div');
+    newRow.className = "flex items-center gap-3 mt-3 animate-slide-down";
+    newRow.innerHTML = `
+      <input type="text" name="facility_label[]" placeholder="Fasilitas lainnya..." class="flex-1 input-field" />
+      <button type="button" onclick="removeFacility(this)" class="w-10 text-red-500 hover:text-red-700">
+        <span class="material-symbols-outlined">delete</span>
+      </button>
+    `;
+    container.appendChild(newRow);
+
+
+    checkFacilityLimit();
+  }
+
+
+
+
+function removeFacility(btn) {
+    btn.parentElement.remove();
+    checkFacilityLimit();
+}
+
+
+function checkFacilityLimit() {
+    const count = document.getElementById('facility-container').querySelectorAll('.flex').length;
+    const photoSection = document.getElementById('photo-upload-section');
+
+
+    if (count >= 5) {
+        photoSection.classList.remove('hidden');
+    } else {
+        photoSection.classList.add('hidden');
+        // Opsional: Reset atau hapus semua foto jika fasilitas < 5
+    }
+}
+
+
+      // Gambar Properti
       const imageGrid = document.getElementById("image-grid");
       let fileCounter = 0;
+
 
       function createUploadSlot(isFirst = false) {
         fileCounter++;
         const slotId = `file-${fileCounter}`;
-
         const div = document.createElement("div");
-        // Tambahkan border biru jika ini adalah slot utama
-        const borderClass = isFirst ? "border-blue-500 border-2" : "border-gray-300 border-2";
-        div.className = `relative group aspect-square border-dashed rounded-lg overflow-hidden hover:border-blue-500 transition-colors ${borderClass}`;
+        const borderClass = isFirst ? "border-primary border-2" : "border-gray-200 border-2";
+
+
+        div.className = `relative group aspect-square border-dashed rounded-2xl overflow-hidden hover:border-primary transition-all bg-gray-50/50 ${borderClass}`;
         div.id = `container-${slotId}`;
 
+
         div.innerHTML = `
-            <label for="${slotId}" class="flex flex-col items-center justify-center w-full h-full cursor-pointer bg-gray-50 hover:bg-gray-100">
-                ${isFirst ? '<span class="absolute top-2 left-2 bg-blue-600 text-white text-[10px] px-2 py-0.5 rounded shadow-sm z-10 font-bold uppercase">Utama</span>' : ""}
-                
-                <div class="flex flex-col items-center justify-center pt-5 pb-6 text-gray-400" id="placeholder-${slotId}">
-                    <svg class="w-8 h-8 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                    <span class="text-xs">${isFirst ? "Upload Sampul" : "Tambah Foto"}</span>
+            <label for="${slotId}" class="flex flex-col items-center justify-center w-full h-full cursor-pointer hover:bg-emerald-50/10">
+                ${isFirst ? '<span class="absolute top-2 left-2 bg-primary text-white text-[10px] px-2 py-0.5 rounded shadow-sm z-10 font-bold uppercase">Utama</span>' : ""}
+                <div class="flex flex-col items-center justify-center text-gray-400 group-hover:text-primary transition-colors" id="placeholder-${slotId}">
+                    <span class="material-symbols-outlined text-3xl mb-1">${isFirst ? "photo_camera" : "add"}</span>
+                    <span class="text-[10px] font-bold uppercase tracking-tighter">${isFirst ? "Sampul" : "Tambah"}</span>
                 </div>
                 <img id="preview-${slotId}" class="hidden w-full h-full object-cover" />
-                
-                <input id="${slotId}" name="images[]" type="file" class="hidden image-input" accept="image/*" 
-                    onchange="previewImage(this, '${slotId}')"} />
+                <input id="${slotId}" name="images[]" type="file" class="hidden image-input" accept="image/*" onchange="previewImage(this, '${slotId}', ${fileCounter})" />
             </label>
-            
             ${
-              isFirst
-                ? ""
-                : `
-            <button type="button" onclick="removeSlot('${slotId}')" class="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+              !isFirst
+                ? `
+            <button type="button" onclick="removeSlot('${slotId}')" class="absolute top-2 right-2 bg-red-500 text-white rounded-lg p-1 opacity-0 group-hover:opacity-100 transition-all scale-75 group-hover:scale-100">
+                <span class="material-symbols-outlined text-sm">close</span>
             </button>`
+                : ""
             }
         `;
-
         imageGrid.appendChild(div);
       }
 
-      // Inisialisasi awal: Kotak pertama dikirim 'true' sebagai utama
-      createUploadSlot(true);
-      for (let i = 0; i < 4; i++) {
-        createUploadSlot(false);
-      }
 
       // Fungsi Preview Gambar
-      function previewImage(input, id) {
-        if (input.files && input.files[0]) {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            document.getElementById(`preview-${id}`).src = e.target.result;
-            document.getElementById(`preview-${id}`).classList.remove("hidden");
-            document.getElementById(`placeholder-${id}`).classList.add("hidden");
-
-            // Cek apakah perlu tambah kotak baru
-            checkAndAddSlot();
-          };
-          reader.readAsDataURL(input.files[0]);
-        }
-      }
-
-      // Fungsi Hapus
-      function removeSlot(id) {
+    async function previewImage(input, id, urutan) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
         const container = document.getElementById(`container-${id}`);
-        const totalSlots = imageGrid.children.length;
+        const preview = document.getElementById(`preview-${id}`);
+        const placeholder = document.getElementById(`placeholder-${id}`);
+        const submitBtn = document.querySelector('button[type="submit"]');
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          document.getElementById(`preview-${id}`).src = e.target.result;
+          document.getElementById(`preview-${id}`).classList.remove("hidden");
+          document.getElementById(`placeholder-${id}`).classList.add("hidden");
 
-        // Jika sudah ada isinya, hapus kontennya saja atau hapus kotaknya?
-        // Di sini kita hapus kotaknya, tapi pastikan minimal 4 kotak tetap ada
-        if (totalSlots > 4) {
-          container.remove();
-        } else {
-          // Jika sisa 4, reset saja isinya agar tetap ada 4 kotak kosong
-          document.getElementById(`preview-${id}`).classList.add("hidden");
-          document.getElementById(`placeholder-${id}`).classList.remove("hidden");
-          document.getElementById(id).value = "";
-        }
+
+          // Cek apakah perlu tambah kotak baru
+          checkAndAddSlot();
+        };
+        reader.readAsDataURL(input.files[0]);
+
+
+        // 2. State Loading & Disable Submit
+          container.classList.add('opacity-50', 'pointer-events-none');
+          const loadingIndicator = addLoadingUI(container); // Tambahkan elemen spinner
+          submitBtn.disabled = true;
+          submitBtn.classList.add('bg-gray-400');
+          submitBtn.classList.add('hover:bg-gray-700');
+          submitBtn.textContent = 'Tunggu Sebentar...';
+
+
+          // 3. Kirim ke Server (AJAX)
+          const formData = new FormData();
+          formData.append('image', file);
+          formData.append('property_id', propertyId);
+          formData.append('is_main', id === 'file-1' ? 1 : 0);
+          formData.append('urutan', urutan);
+
+
+          try {
+              const response = await fetch('index.php?page=upload&action=async_upload', {
+                  method: 'POST',
+                  body: formData
+              });
+             
+              if (response.ok) {
+                  console.log('Upload sukses:');
+              }
+          } catch (error) {
+            console.error('Gagal mengunggah gambar:', error);
+              alert('Gagal mengunggah gambar');
+          } finally {
+              // 4. Selesai Loading
+              container.classList.remove('opacity-50', 'pointer-events-none');
+              loadingIndicator.remove();
+              submitBtn.disabled = false;
+              submitBtn.classList.remove('bg-gray-400');
+              submitBtn.classList.remove('hover:bg-gray-700');
+              submitBtn.textContent = 'SIMPAN PROPERTI';
+          }
       }
+    }
+
+
+    function addLoadingUI(container) {
+      const loader = document.createElement('div');
+      loader.className = "absolute inset-0 flex items-center justify-center bg-white/50";
+      loader.innerHTML = '<div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>';
+      container.appendChild(loader);
+      return loader;
+  }
+     
+
 
       function checkAndAddSlot() {
-        const totalSlots = imageGrid.children.length;
-        const filledSlots = Array.from(document.querySelectorAll('input[type="file"]')).filter((i) => i.value !== "").length;
+    const allInputs = document.querySelectorAll(".image-input");
+    const lastInput = allInputs[allInputs.length - 1];
 
-        // Jika semua kotak terisi, tambahkan satu lagi
-        if (filledSlots === totalSlots) {
-          createUploadSlot();
-        }
-      }
 
+    // Cek apakah ada kotak yang benar-benar kosong (tanpa file)
+    const emptySlots = Array.from(allInputs).filter(input => input.value === "").length;
+
+
+    // Tambah kotak baru HANYA JIKA:
+    // 1. Kotak terakhir sudah diisi
+    // 2. DAN tidak ada kotak kosong lain yang tersisa di grid
+    if (lastInput && lastInput.value !== "" && emptySlots === 0) {
+        createUploadSlot(false);
+    }
+}
       function validateForm() {
-        // Ambil input file pertama (Gambar Utama)
         const mainImage = document.querySelector(".image-input");
-
         if (!mainImage || mainImage.files.length === 0) {
           alert("Mohon unggah gambar utama (kotak pertama) sebagai foto sampul properti!");
-          mainImage.parentElement.classList.add("border-red-500"); // Beri highlight merah jika kosong
-          return false; // Batalkan submit
+          mainImage.parentElement.classList.replace("border-primary", "border-red-500");
+          return false;
         }
-
-        return true; // Izinkan submit
+        return true;
       }
+
+
+      // Init slots
+      imageGrid.innerHTML = ""; // Bersihkan dulu agar tidak dobel
+createUploadSlot(true);   // Slot 1 (Utama)
+for (let i = 0; i < 4; i++) {
+    createUploadSlot(false); // Slot 2, 3, 4, 5
+}
+
+
+      // Fungsi Tambah Kategori Baru (Prompt)
+function addNewCategory() {
+    const newCat = prompt("Masukkan nama kategori baru:");
+    if (newCat) {
+        const container = document.getElementById('category-container');
+        const btn = container.lastElementChild;
+        const label = document.createElement('label');
+        label.className = "cursor-pointer animate-in zoom-in duration-300";
+        label.innerHTML = `
+            <input type="radio" name="category" value="${newCat}" class="hidden peer">
+            <span class="px-6 py-3 rounded-2xl border-2 border-gray-100 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:text-primary font-bold transition-all block text-sm">${newCat}</span>
+        `;
+        container.insertBefore(label, btn);
+    }
+}
+
+
+// PERBAIKAN: Fungsi Hapus Gambar (Hapus isi, kotak tetap ada)
+function removeSlot(id) {
+    const container = document.getElementById(`container-${id}`);
+    const allSlots = Array.from(imageGrid.children);
+    const slotIndex = allSlots.indexOf(container);
+
+
+    if (slotIndex >= 5) {
+        container.remove();
+    } else {
+        const input = document.getElementById(id);
+        const preview = document.getElementById(`preview-${id}`);
+        const placeholder = document.getElementById(`placeholder-${id}`);
+       
+        input.value = "";
+        preview.src = "";
+        preview.classList.add("hidden");
+        placeholder.classList.remove("hidden");
+    }
+
+
+    // TAMBAHKAN INI:
+    // Jika setelah hapus foto, ada slot kosong lebih dari satu di bagian akhir, hapus kelebihannya.
+    const currentSlots = imageGrid.children;
+    if (currentSlots.length > 5) {
+        const lastSlot = currentSlots[currentSlots.length - 1];
+        const lastInput = lastSlot.querySelector('.image-input');
+        const secondLastSlot = currentSlots[currentSlots.length - 2];
+        const secondLastInput = secondLastSlot.querySelector('.image-input');
+
+
+        // Jika dua slot terakhir sama-sama kosong, hapus yang paling ujung
+        if (lastInput.value === "" && secondLastInput.value === "") {
+            lastSlot.remove();
+        }
+    }
+}
     </script>
   </body>
 </html>
+
+
+
