@@ -36,27 +36,28 @@ class UploadModel {
     // Fungsi final untuk update data draft menjadi publik
     public function finalizeProperty($data) {
         try {
+            var_dump($data,'ini data');
             $this->db->beginTransaction();
 
             // 1. Update data utama properti dan ubah status menjadi 'published'
             $sqlProp = "UPDATE properties SET 
                         title = :title, 
-                        slug = :slug, 
                         price = :price, 
                         bedrooms = :bedrooms, 
                         bathrooms = :bathrooms, 
                         building_area = :building_area,
+                        description = :description,
                         status = 'published' 
                         WHERE id = :id";
             
             $stmt = $this->db->prepare($sqlProp);
             $stmt->execute([
                 ':title'         => $data['title'],
-                ':slug'          => $data['slug'],
                 ':price'         => $data['price'],
                 ':bedrooms'      => $data['bedrooms'],
                 ':bathrooms'     => $data['bathrooms'],
                 ':building_area' => $data['building_area'],
+                ':description' => $data['description'],
                 ':id'            => $data['property_id']
             ]);
 
@@ -70,11 +71,11 @@ class UploadModel {
 
             // 3. Insert Fasilitas
             if (isset($data['facility_label'])) {
-                $sqlFac = "INSERT INTO facilities (property_id, icon, label) VALUES (?, ?, ?)";
+                $sqlFac = "INSERT INTO property_facilities (property_id, icon_name, facility_label) VALUES (?, ?, ?)";
                 $stmtFac = $this->db->prepare($sqlFac);
                 foreach ($data['facility_label'] as $key => $label) {
                     if (!empty($label)) {
-                        $stmtFac->execute([$data['property_id'], $data['facility_icon'][$key], $label]);
+                        $stmtFac->execute([$data['property_id'], '', $label]);
                     }
                 }
             }
@@ -82,6 +83,7 @@ class UploadModel {
             $this->db->commit();
             return true;
         } catch (Exception $e) {
+            var_dump('errorkang duar',$e);
             $this->db->rollBack();
             return false;
         }

@@ -58,7 +58,8 @@
         <p class="text-gray-500 mt-2 text-lg">Lengkapi detail properti Anda untuk dipublikasikan ke Dabelyuland.</p>
       </div>
 
-      <form action="index.php?page=upload&action=store" method="POST" enctype="multipart/form-data" onsubmit="return validateForm();">
+      <form action="index.php?page=upload&action=store" method="POST" onsubmit="return validateForm();">
+        <input type="hidden" name="property_id" value=<?= $propertyId ?>>
         <section class="form-card">
           <div class="icon-badge">
             <span class="material-symbols-outlined">info</span>
@@ -227,65 +228,62 @@
       }
 
       // Fungsi Preview Gambar
-  async function previewImage(input, id, urutan) {
-    if (input.files && input.files[0]) {
-      const file = input.files[0];
-      const container = document.getElementById(`container-${id}`);
-      const preview = document.getElementById(`preview-${id}`);
-      const placeholder = document.getElementById(`placeholder-${id}`);
-      const submitBtn = document.querySelector('button[type="submit"]');
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        document.getElementById(`preview-${id}`).src = e.target.result;
-        document.getElementById(`preview-${id}`).classList.remove("hidden");
-        document.getElementById(`placeholder-${id}`).classList.add("hidden");
+    async function previewImage(input, id, urutan) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const container = document.getElementById(`container-${id}`);
+        const preview = document.getElementById(`preview-${id}`);
+        const placeholder = document.getElementById(`placeholder-${id}`);
+        const submitBtn = document.querySelector('button[type="submit"]');
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          document.getElementById(`preview-${id}`).src = e.target.result;
+          document.getElementById(`preview-${id}`).classList.remove("hidden");
+          document.getElementById(`placeholder-${id}`).classList.add("hidden");
 
-        // Cek apakah perlu tambah kotak baru
-        checkAndAddSlot();
-      };
-      reader.readAsDataURL(input.files[0]);
+          // Cek apakah perlu tambah kotak baru
+          checkAndAddSlot();
+        };
+        reader.readAsDataURL(input.files[0]);
 
-      // 2. State Loading & Disable Submit
-        container.classList.add('opacity-50', 'pointer-events-none');
-        const loadingIndicator = addLoadingUI(container); // Tambahkan elemen spinner
-        submitBtn.disabled = true;
-        submitBtn.classList.add('bg-gray-400');
-        submitBtn.classList.add('hover:bg-gray-700');
-        submitBtn.textContent = 'Tunggu Sebentar...';
+        // 2. State Loading & Disable Submit
+          container.classList.add('opacity-50', 'pointer-events-none');
+          const loadingIndicator = addLoadingUI(container); // Tambahkan elemen spinner
+          submitBtn.disabled = true;
+          submitBtn.classList.add('bg-gray-400');
+          submitBtn.classList.add('hover:bg-gray-700');
+          submitBtn.textContent = 'Tunggu Sebentar...';
 
-        // 3. Kirim ke Server (AJAX)
-        const formData = new FormData();
-        formData.append('image', file);
-        formData.append('property_id', propertyId);
-        formData.append('is_main', id === 'file-1' ? 1 : 0);
-        formData.append('urutan', urutan);
+          // 3. Kirim ke Server (AJAX)
+          const formData = new FormData();
+          formData.append('image', file);
+          formData.append('property_id', propertyId);
+          formData.append('is_main', id === 'file-1' ? 1 : 0);
+          formData.append('urutan', urutan);
 
-        try {
-          await setTimeout(() => {
-            
-          }, 1500);
-            const response = await fetch('index.php?page=upload&action=async_upload', {
-                method: 'POST',
-                body: formData
-            });
-            
-            if (response.ok) {
-                console.log('Upload sukses:');
-            }
-        } catch (error) {
-          console.error('Gagal mengunggah gambar:', error);
-            alert('Gagal mengunggah gambar');
-        } finally {
-            // 4. Selesai Loading
-            container.classList.remove('opacity-50', 'pointer-events-none');
-            loadingIndicator.remove();
-            submitBtn.disabled = false;
-            submitBtn.classList.remove('bg-gray-400');
-            submitBtn.classList.remove('hover:bg-gray-700');
-            submitBtn.textContent = 'SIMPAN PROPERTI';
-        }
+          try {
+              const response = await fetch('index.php?page=upload&action=async_upload', {
+                  method: 'POST',
+                  body: formData
+              });
+              
+              if (response.ok) {
+                  console.log('Upload sukses:');
+              }
+          } catch (error) {
+            console.error('Gagal mengunggah gambar:', error);
+              alert('Gagal mengunggah gambar');
+          } finally {
+              // 4. Selesai Loading
+              container.classList.remove('opacity-50', 'pointer-events-none');
+              loadingIndicator.remove();
+              submitBtn.disabled = false;
+              submitBtn.classList.remove('bg-gray-400');
+              submitBtn.classList.remove('hover:bg-gray-700');
+              submitBtn.textContent = 'SIMPAN PROPERTI';
+          }
+      }
     }
-  }
 
     function addLoadingUI(container) {
       const loader = document.createElement('div');

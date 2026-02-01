@@ -106,359 +106,83 @@
       </div>
       <!-- Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Card 1 -->
-        <div
-          class="group flex flex-col bg-surface-light dark:bg-surface-dark rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:shadow-primary/5 border border-border-light dark:border-border-dark transition-all duration-300 transform hover:-translate-y-1"
-        >
-          <div class="relative h-64 overflow-hidden">
-            <img alt="Villa Sunset Paradise" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800&auto=format&fit=crop" />
-            <div
-              class="absolute top-4 left-4 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-text-main dark:text-white shadow-sm border border-black/5 tracking-wider uppercase"
-            >
-              For Sale
-            </div>
-            <button class="absolute top-4 right-4 p-2 rounded-full bg-surface-light/20 backdrop-blur-md hover:bg-white text-white hover:text-red-500 transition-all duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            </button>
-          </div>
+        <!-- Cards -->
+        <?php foreach ($properties as $property) : ?>
+          <div
+            class="group relative bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 transform hover:-translate-y-2 max-w-sm md:max-w-none"
+          >
+            <div class="relative h-72 overflow-hidden">
+              <img alt="Modern Minimalist House" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="<?= $property['image_url'] ?>" />
 
-          <div class="p-6 gap-2 flex flex-col flex-1">
-            <div class="">
-              <p class="text-primary font-bold text-xl tracking-tight">Rp 5.200.000.000</p>
-              <h3 class="text-lg font-bold text-text-main dark:text-white line-clamp-1 group-hover:text-primary transition-colors">Villa Sunset Paradise</h3>
-            </div>
-            <!-- <p class="text-primary font-bold text-xl tracking-tight">Rp 5.200.000.000</p> -->
-
-            <p class="text-text-muted dark:text-gray-400 text-sm mb-6 flex items-center gap-1.5">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              Seminyak, Bali
-            </p>
-
-            <div class="mt-auto grid grid-cols-3 gap-2 pt-5 border-t border-border-light dark:border-border-dark">
-              <div class="flex flex-col items-center gap-1">
-                <div class="flex items-center gap-2 text-text-main dark:text-slate-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                  </svg>
-                  <span class="text-sm font-bold">4</span>
-                </div>
-                <span class="text-[10px] uppercase tracking-widest text-text-muted font-semibold">Kamar</span>
+              <div
+                class="absolute top-4 left-4 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-text-main dark:text-white shadow-sm border border-black/5 tracking-wider uppercase"
+              >
+                Dijual
               </div>
 
-              <div class="flex flex-col items-center gap-1 border-x border-border-light dark:border-border-dark">
-                <div class="flex items-center gap-2 text-text-main dark:text-slate-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
-                  </svg>
-                  <span class="text-sm font-bold">3</span>
-                </div>
-                <span class="text-[10px] uppercase tracking-widest text-text-muted font-semibold">Mandi</span>
-              </div>
-
-              <div class="flex flex-col items-center gap-1">
-                <div class="flex items-center gap-2 text-text-main dark:text-slate-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
-                  </svg>
-                  <span class="text-sm font-bold">180m²</span>
-                </div>
-                <span class="text-[10px] uppercase tracking-widest text-text-muted font-semibold">Luas</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Card 2 -->
-        <div
-          class="group relative bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 transform hover:-translate-y-2 max-w-sm md:max-w-none"
-        >
-          <div class="relative h-72 overflow-hidden">
-            <img alt="Modern Minimalist House" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop" />
-
-            <div
-              class="absolute top-4 left-4 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-text-main dark:text-white shadow-sm border border-black/5 tracking-wider uppercase"
-            >
-              Dijual
+              <button class="absolute top-4 right-4 p-2 rounded-full bg-surface-light/20 backdrop-blur-md hover:bg-white text-white hover:text-red-500 transition-all duration-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </button>
             </div>
 
-            <button class="absolute top-4 right-4 p-2 rounded-full bg-surface-light/20 backdrop-blur-md hover:bg-white text-white hover:text-red-500 transition-all duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            </button>
-          </div>
-
-          <div class="p-6">
-            <div class="flex flex-col gap-1 mb-4">
-              <div class="flex justify-between items-start">
-                <h3 class="text-lg font-bold text-slate-800 dark:text-white leading-tight line-clamp-2 group-hover:text-primary transition-colors">
-                  Rumah Minimalis Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti, laborum. Modern Siap Huni
-                </h3>
-              </div>
-              <p class="text-2xl font-semibold text-primary mt-1">Rp 3.800.000.000</p>
-            </div>
-
-            <div class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 text-sm mb-6">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <span>BSD City, Tangerang</span>
-            </div>
-
-            <div class="grid grid-cols-3 gap-2 pt-5 border-t border-slate-100 dark:border-slate-800">
-              <div class="flex flex-col items-center gap-1">
-                <div class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                  </svg>
-                  <span class="text-xs font-bold">4</span>
+            <div class="p-6">
+              <div class="flex flex-col gap-1 mb-4">
+                <div class="flex justify-between items-start">
+                  <h3 class="text-lg font-bold text-slate-800 dark:text-white leading-tight line-clamp-2 group-hover:text-primary transition-colors">
+                    <?= $property['title']; ?>
+                  </h3>
                 </div>
-                <span class="text-[10px] uppercase tracking-wider text-slate-400 font-medium">Kamar</span>
+                <p class="text-2xl font-semibold text-primary mt-1">Rp <?= number_format($property['price'], 0, ',', '.'); ?></p>
               </div>
 
-              <div class="flex flex-col items-center gap-1 border-x border-slate-100 dark:border-slate-800">
-                <div class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
-                  </svg>
-                  <span class="text-xs font-bold">3</span>
-                </div>
-                <span class="text-[10px] uppercase tracking-wider text-slate-400 font-medium">Mandi</span>
+              <div class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 text-sm mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span><?= $property['district'] ?>, <?= $property['city'] ?></span>
               </div>
 
-              <div class="flex flex-col items-center gap-1">
-                <div class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
-                  </svg>
-                  <span class="text-xs font-bold">180m²</span>
+              <div class="grid grid-cols-3 gap-2 pt-5 border-t border-slate-100 dark:border-slate-800">
+                <div class="flex flex-col items-center gap-1">
+                  <div class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    <span class="text-xs font-bold"><?= $property['bedrooms'] ?></span>
+                  </div>
+                  <span class="text-[10px] uppercase tracking-wider text-slate-400 font-medium">Kamar</span>
                 </div>
-                <span class="text-[10px] uppercase tracking-wider text-slate-400 font-medium">Luas</span>
+
+                <div class="flex flex-col items-center gap-1 border-x border-slate-100 dark:border-slate-800">
+                  <div class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+                    </svg>
+                    <span class="text-xs font-bold"><?= $property['bathrooms'] ?></span>
+                  </div>
+                  <span class="text-[10px] uppercase tracking-wider text-slate-400 font-medium">Mandi</span>
+                </div>
+
+                <div class="flex flex-col items-center gap-1">
+                  <div class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
+                    </svg>
+                    <span class="text-xs font-bold"><?= $property['building_area'] ?>m²</span>
+                  </div>
+                  <span class="text-[10px] uppercase tracking-wider text-slate-400 font-medium">Luas</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <!-- Card 2 -->
-        <div
-          class="group relative bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 transform hover:-translate-y-2 max-w-sm md:max-w-none"
-        >
-          <div class="relative h-72 overflow-hidden">
-            <img alt="Modern Minimalist House" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop" />
-
-            <div
-              class="absolute top-4 left-4 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-text-main dark:text-white shadow-sm border border-black/5 tracking-wider uppercase"
-            >
-              Dijual
-            </div>
-
-            <button class="absolute top-4 right-4 p-2 rounded-full bg-surface-light/20 backdrop-blur-md hover:bg-white text-white hover:text-red-500 transition-all duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            </button>
-          </div>
-
-          <div class="p-6">
-            <div class="flex flex-col gap-1 mb-4">
-              <div class="flex justify-between items-start">
-                <h3 class="text-lg font-bold text-slate-800 dark:text-white leading-tight line-clamp-2 group-hover:text-primary transition-colors">
-                  Rumah Minimalis Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti, laborum. Modern Siap Huni
-                </h3>
-              </div>
-              <p class="text-2xl font-semibold text-primary mt-1">Rp 3.800.000.000</p>
-            </div>
-
-            <div class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 text-sm mb-6">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <span>BSD City, Tangerang</span>
-            </div>
-
-            <div class="grid grid-cols-3 gap-2 pt-5 border-t border-slate-100 dark:border-slate-800">
-              <div class="flex flex-col items-center gap-1">
-                <div class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                  </svg>
-                  <span class="text-xs font-bold">4</span>
-                </div>
-                <span class="text-[10px] uppercase tracking-wider text-slate-400 font-medium">Kamar</span>
-              </div>
-
-              <div class="flex flex-col items-center gap-1 border-x border-slate-100 dark:border-slate-800">
-                <div class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
-                  </svg>
-                  <span class="text-xs font-bold">3</span>
-                </div>
-                <span class="text-[10px] uppercase tracking-wider text-slate-400 font-medium">Mandi</span>
-              </div>
-
-              <div class="flex flex-col items-center gap-1">
-                <div class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
-                  </svg>
-                  <span class="text-xs font-bold">180m²</span>
-                </div>
-                <span class="text-[10px] uppercase tracking-wider text-slate-400 font-medium">Luas</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Card 2 -->
-        <div
-          class="group relative bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 transform hover:-translate-y-2 max-w-sm md:max-w-none"
-        >
-          <div class="relative h-72 overflow-hidden">
-            <img alt="Modern Minimalist House" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop" />
-
-            <div
-              class="absolute top-4 left-4 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-text-main dark:text-white shadow-sm border border-black/5 tracking-wider uppercase"
-            >
-              Dijual
-            </div>
-
-            <button class="absolute top-4 right-4 p-2 rounded-full bg-surface-light/20 backdrop-blur-md hover:bg-white text-white hover:text-red-500 transition-all duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            </button>
-          </div>
-
-          <div class="p-6">
-            <div class="flex flex-col gap-1 mb-4">
-              <div class="flex justify-between items-start">
-                <h3 class="text-lg font-bold text-slate-800 dark:text-white leading-tight line-clamp-2 group-hover:text-primary transition-colors">
-                  Rumah Minimalis Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti, laborum. Modern Siap Huni
-                </h3>
-              </div>
-              <p class="text-2xl font-semibold text-primary mt-1">Rp 3.800.000.000</p>
-            </div>
-
-            <div class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 text-sm mb-6">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <span>BSD City, Tangerang</span>
-            </div>
-
-            <div class="grid grid-cols-3 gap-2 pt-5 border-t border-slate-100 dark:border-slate-800">
-              <div class="flex flex-col items-center gap-1">
-                <div class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                  </svg>
-                  <span class="text-xs font-bold">4</span>
-                </div>
-                <span class="text-[10px] uppercase tracking-wider text-slate-400 font-medium">Kamar</span>
-              </div>
-
-              <div class="flex flex-col items-center gap-1 border-x border-slate-100 dark:border-slate-800">
-                <div class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
-                  </svg>
-                  <span class="text-xs font-bold">3</span>
-                </div>
-                <span class="text-[10px] uppercase tracking-wider text-slate-400 font-medium">Mandi</span>
-              </div>
-
-              <div class="flex flex-col items-center gap-1">
-                <div class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
-                  </svg>
-                  <span class="text-xs font-bold">180m²</span>
-                </div>
-                <span class="text-[10px] uppercase tracking-wider text-slate-400 font-medium">Luas</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- Card 2 -->
-        <div
-          class="group relative bg-white dark:bg-slate-900 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 transform hover:-translate-y-2 max-w-sm md:max-w-none"
-        >
-          <div class="relative h-72 overflow-hidden">
-            <img alt="Modern Minimalist House" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800&auto=format&fit=crop" />
-
-            <div
-              class="absolute top-4 left-4 bg-surface-light/90 dark:bg-surface-dark/90 backdrop-blur-sm px-3 py-1 rounded-full text-[10px] font-bold text-text-main dark:text-white shadow-sm border border-black/5 tracking-wider uppercase"
-            >
-              Dijual
-            </div>
-
-            <button class="absolute top-4 right-4 p-2 rounded-full bg-surface-light/20 backdrop-blur-md hover:bg-white text-white hover:text-red-500 transition-all duration-300">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg>
-            </button>
-          </div>
-
-          <div class="p-6">
-            <div class="flex flex-col gap-1 mb-4">
-              <div class="flex justify-between items-start">
-                <h3 class="text-lg font-bold text-slate-800 dark:text-white leading-tight line-clamp-2 group-hover:text-primary transition-colors">
-                  Rumah Minimalis Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti, laborum. Modern Siap Huni
-                </h3>
-              </div>
-              <p class="text-2xl font-semibold text-primary mt-1">Rp 3.800.000.000</p>
-            </div>
-
-            <div class="flex items-center gap-1.5 text-slate-500 dark:text-slate-400 text-sm mb-6">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <span>BSD City, Tangerang</span>
-            </div>
-
-            <div class="grid grid-cols-3 gap-2 pt-5 border-t border-slate-100 dark:border-slate-800">
-              <div class="flex flex-col items-center gap-1">
-                <div class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                  </svg>
-                  <span class="text-xs font-bold">4</span>
-                </div>
-                <span class="text-[10px] uppercase tracking-wider text-slate-400 font-medium">Kamar</span>
-              </div>
-
-              <div class="flex flex-col items-center gap-1 border-x border-slate-100 dark:border-slate-800">
-                <div class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
-                  </svg>
-                  <span class="text-xs font-bold">3</span>
-                </div>
-                <span class="text-[10px] uppercase tracking-wider text-slate-400 font-medium">Mandi</span>
-              </div>
-
-              <div class="flex flex-col items-center gap-1">
-                <div class="flex items-center gap-1.5 text-slate-700 dark:text-slate-300">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
-                  </svg>
-                  <span class="text-xs font-bold">180m²</span>
-                </div>
-                <span class="text-[10px] uppercase tracking-wider text-slate-400 font-medium">Luas</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <?php endforeach; ?>
       </div>
     </div>
   </section>
+
   <!-- Stats/Trusted Section (Optional filler to balance height) -->
   <section class="border-t border-border-light dark:border-border-dark bg-white dark:bg-surface-dark">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -486,64 +210,6 @@
     </div>
   </section>
 </main>
-<!-- Footer -->
-<footer class="bg-surface-light dark:bg-surface-dark border-t border-gray-200 dark:border-gray-800 pt-12 pb-8">
-  <div class="max-w-7xl mx-auto px-6 lg:px-8">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
-      <div class="col-span-1 flex flex-col items-start">
-        <div class="flex items-center gap-3 mb-4">
-          <div class="flex items-center justify-center overflow-hidden">
-            <img src="../../dabelyu logo.png" alt="Logo Dabelyuland" class="h-12 w-auto object-contain transition-transform duration-300 hover:scale-105" />
-          </div>
-          <h2 class="text-lg font-bold tracking-tight text-[#0d121b] dark:text-white uppercase">Dabelyuland</h2>
-        </div>
-        <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed max-w-xs">Platform properti premium terdepan untuk menemukan hunian impian Anda dengan mudah dan aman.</p>
-      </div>
-
-      <div>
-        <h4 class="font-bold text-sm uppercase tracking-wider text-[#0d121b] dark:text-white mb-5">Perusahaan</h4>
-        <ul class="space-y-3 text-sm text-gray-500 dark:text-gray-400">
-          <li><a class="hover:text-primary transition-colors" href="#">Tentang Kami</a></li>
-          <li><a class="hover:text-primary transition-colors" href="#">Karir</a></li>
-          <li><a class="hover:text-primary transition-colors" href="#">Hubungi Kami</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 class="font-bold text-sm uppercase tracking-wider text-[#0d121b] dark:text-white mb-5">Dukungan</h4>
-        <ul class="space-y-3 text-sm text-gray-500 dark:text-gray-400">
-          <li><a class="hover:text-primary transition-colors" href="#">Pusat Bantuan</a></li>
-          <li><a class="hover:text-primary transition-colors" href="#">Syarat & Ketentuan</a></li>
-          <li><a class="hover:text-primary transition-colors" href="#">Kebijakan Privasi</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h4 class="font-bold text-sm uppercase tracking-wider text-[#0d121b] dark:text-white mb-5">Berlangganan</h4>
-        <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Dapatkan update properti terbaru langsung di email Anda.</p>
-        <div class="flex gap-2">
-          <input
-            class="w-full bg-gray-50 dark:bg-surface-dark border border-gray-200 dark:border-gray-700 rounded-lg text-sm px-3 py-2 text-[#0d121b] dark:text-white focus:ring-1 focus:ring-primary outline-none"
-            placeholder="Email Anda"
-            type="email"
-          />
-          <button class="bg-primary hover:bg-primary-dark text-white rounded-lg px-4 py-2 transition-all active:scale-95 shadow-sm shadow-primary/20">
-            <span class="material-symbols-outlined text-sm">arrow_forward</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div class="border-t border-gray-100 dark:border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-6">
-      <p class="text-xs text-gray-400 dark:text-gray-500 font-medium">© 2025 Dabelyuland. All rights reserved.</p>
-      <div class="flex items-center gap-6">
-        <a class="text-gray-400 hover:text-primary transition-all" href="#"><span class="sr-only">Instagram</span>IG</a>
-        <a class="text-gray-400 hover:text-primary transition-all" href="#"><span class="sr-only">Twitter</span>TW</a>
-        <a class="text-gray-400 hover:text-primary transition-all" href="#"><span class="sr-only">Facebook</span>FB</a>
-      </div>
-    </div>
-  </div>
-</footer>
 
 <script>
   function initHeroCarousel() {

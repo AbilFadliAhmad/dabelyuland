@@ -1,53 +1,15 @@
 <?php
 class HomeController {
     public function index() {
-        // Memanggil Model Home
+        // 1. Panggil Model
         require_once 'models/homeModel.php';
-        // $model = new HomeModel();
-        // $data['produk'] = $model->getAllProduk();
+        $model = new HomeModel();
 
-        // Panggil View Utama
+        // 2. Ambil data properti
+        $properties = $model->getAllProperty();
+
+        // 3. Kirim data ke View (menggunakan include)
+        // Variabel $properties akan otomatis bisa diakses di file home.php
         include 'views/layout/home.php';
-    }
-    public function store() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            require_once 'models/homeModel.php';
-            $model = new HomeModel();
-            
-            // Mengirim data POST ke model
-            $success = $model->insertProduk($_POST);
-            
-            header('Content-Type: application/json');
-            echo json_encode(['success' => $success]);
-            exit;
-        }
-    }
-
-    public function edit() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            require_once 'models/homeModel.php';
-            $model = new HomeModel();
-            
-            $success = $model->updateProduk($_POST);
-            
-            header('Content-Type: application/json');
-            echo json_encode(['success' => $success]);
-            exit;
-        }
-    }
-
-    public function delete() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            require_once 'models/homeModel.php';
-            $model = new HomeModel();
-            
-            // Pastikan ID tersedia
-            $id = isset($_POST['id']) ? $_POST['id'] : null;
-            $success = $model->deleteProduk($id);
-            
-            header('Content-Type: application/json');
-            echo json_encode(['success' => $success]);
-            exit;
-        }
     }
 }

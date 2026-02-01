@@ -11,13 +11,13 @@
           </div>
           <!-- Desktop Nav -->
           <div class="hidden md:flex items-center gap-8">
-            <a class="text-sm font-medium text-text-main dark:text-gray-200 hover:text-primary dark:hover:text-primary transition-colors" href="#">Beranda</a>
+            <a class="text-sm font-medium text-text-main dark:text-gray-200 hover:text-primary dark:hover:text-primary transition-colors" href="index.php">Beranda</a>
             <a class="text-sm font-medium text-text-main dark:text-gray-200 hover:text-primary dark:hover:text-primary transition-colors" href="#">Properti</a>
             <a class="text-sm font-medium text-text-main dark:text-gray-200 hover:text-primary dark:hover:text-primary transition-colors" href="#">Portofolio</a>
           </div>
           <!-- CTA -->
           <div class="flex items-center gap-4">
-            <button class="hidden md:flex items-center justify-center h-10 px-6 rounded-lg bg-primary hover:bg-primary-dark text-white text-sm font-bold transition-all shadow-md shadow-primary/20">Jual Properti</button>
+            <a href="index.php?page=upload" target="_blank" class="hidden md:flex items-center justify-center h-10 px-6 rounded-lg bg-primary hover:bg-primary-dark text-white text-sm font-bold transition-all shadow-md shadow-primary/20">Jual Properti</a>
             <!-- Mobile Menu Button -->
             <button class="md:hidden p-2 text-text-main dark:text-white">
               <span class="material-symbols-outlined">menu</span>
