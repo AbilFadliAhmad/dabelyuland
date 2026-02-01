@@ -202,9 +202,21 @@ endif; ?>
       require_once 'controllers/uploadController.php';
       $controller = new UploadController();
       $controller->index();
-    } else if ($page == 'portfolio') {
+    } else if ($page == 'portofolio') {
       require_once 'controllers/portfolioController.php';
       $controller = new PortfolioController();
+      $controller->index();
+    } else if ($page == 'listPortofolios') {
+      require_once 'controllers/listPortofoliosController.php';
+      $controller = new ListPortofoliosController();
+      $controller->index();
+    } else if ($page == 'uploadPortofolio') {
+      require_once 'controllers/uploadPortofolioController.php';
+      $controller = new UploadPortofolioController();
+      $controller->index();
+    } else if ($page == 'detailPortofolio') {
+      require_once 'controllers/detailPortofolioController.php';
+      $controller = new DetailPortofolioController();
       $controller->index();
     } else if ($page == 'property') {
       require_once 'controllers/propertyController.php';
@@ -218,13 +230,13 @@ endif; ?>
       require_once 'controllers/dashboardAdminController.php';
       $controller = new DashboardAdminController();
       $controller->index();
-    } else if ($page == 'list-property') {
-      require_once 'controllers/propertyController.php';
-      $controller = new PropertyController();
+    } else if ($page == 'dashboardAgent') {
+      require_once 'controllers/dashboardAgentController.php';
+      $controller = new DashboardAgentController();
       $controller->index();
-    } else if ($page == 'list-property') {
-      require_once 'controllers/propertyController.php';
-      $controller = new PropertyController();
+    } else if ($page == 'listAgents') {
+      require_once 'controllers/listAgentsController.php';
+      $controller = new ListAgentsController();
       $controller->index();
     } 
     // Tambahkan route lain di sini

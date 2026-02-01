@@ -8,6 +8,11 @@ class DashboardAdminController {
     }
 
     public function index() {
+
+        $role = $_SESSION['agent_role'] ?? '';
+        if ($role == 'agent') echo "<script>window.location.href = 'index.php?page=dashboardAdmin';</script>";
+        else if ($role == 'agent') echo "<script>window.location.href = 'index.php?page=upload';</script>";
+
         // Tangkap parameter status, default adalah 'all'
         $statusFilter = $_GET['status'] ?? 'all';
 

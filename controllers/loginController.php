@@ -9,7 +9,7 @@ class LoginController {
 
     public function index() {
         // Check Role
-        $role = $_SESSION['agent_role'] ?? '';
+        $role = $_SESSION['agent_role'] ?? 'guest';
         if ($role == 'admin') echo "<script>window.location.href = 'index.php?page=dashboardAdmin';</script>";
         else if ($role == 'agent') echo "<script>window.location.href = 'index.php?page=upload';</script>";
 
